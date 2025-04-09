@@ -3,7 +3,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { Building, MapPin, ChevronDown } from 'lucide-react';
 
-const JobCard = ({ job }) => {
+const JobCard = ({ job, onJobClick }) => {
   return (
     <motion.div
       key={job.id}
@@ -65,8 +65,11 @@ const JobCard = ({ job }) => {
       
       {/* Job Description */}
       <div className="mt-4 pt-4 border-t border-gray-200">
-        <p className="text-gray-700">{job.description}</p>
-        <button className="mt-2 text-primary-600 hover:text-primary-800 font-medium flex items-center">
+        <p className="text-gray-700 line-clamp-2">{job.description}</p>
+        <button 
+          onClick={() => onJobClick(job.id)}
+          className="mt-2 text-primary-600 hover:text-primary-800 font-medium flex items-center"
+        >
           View Details <ChevronDown className="h-4 w-4 ml-1" />
         </button>
       </div>

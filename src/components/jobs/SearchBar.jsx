@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Search, MapPin } from 'lucide-react';
+import { Search, MapPin, Filter } from 'lucide-react';
 
 const SearchBar = ({ 
   searchTerm, 
