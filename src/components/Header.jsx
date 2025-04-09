@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
-import { Menu, X, ChevronDown, User, LogOut } from 'lucide-react';
+import { Menu, X, ChevronDown, User, LogOut, FileText } from 'lucide-react';
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -86,18 +86,32 @@ const Header = () => {
                 </button>
                 
                 {isUserMenuOpen && (
-                  <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-10 animate-fade-in">
-                    <Link to="/dashboard" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Dashboard</Link>
-                    <Link to="/resume-builder" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Resume Builder</Link>
-                    <button 
-                      onClick={handleLogout}
-                      className="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100"
-                    >
-                      <div className="flex items-center">
+                  <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-10 animate-fade-in divide-y divide-gray-100">
+                    <div className="py-1">
+                      <Link to="/dashboard" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center">
+                        <User size={16} className="mr-2 text-gray-500" />
+                        Dashboard
+                      </Link>
+                      <Link to="/profile" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center">
+                        <User size={16} className="mr-2 text-gray-500" />
+                        View Profile
+                      </Link>
+                    </div>
+                    <div className="py-1">
+                      <Link to="/resume-builder" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center">
+                        <FileText size={16} className="mr-2 text-gray-500" />
+                        Resume Builder
+                      </Link>
+                    </div>
+                    <div className="py-1">
+                      <button 
+                        onClick={handleLogout}
+                        className="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100 flex items-center"
+                      >
                         <LogOut size={16} className="mr-2" />
                         <span>Logout</span>
-                      </div>
-                    </button>
+                      </button>
+                    </div>
                   </div>
                 )}
               </div>

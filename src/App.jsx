@@ -13,6 +13,7 @@ import InterviewPrep from "./pages/InterviewPrep";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
+import Profile from "./pages/Profile";
 import CompanyProfiles from "./pages/CompanyProfiles";
 import AchievementShowcase from "./pages/AchievementShowcase";
 import NotFound from "./pages/NotFound";
@@ -37,6 +38,11 @@ const App = () => (
           <Route path="/dashboard" element={
             <ProtectedRoute>
               <Dashboard />
+            </ProtectedRoute>
+          } />
+          <Route path="/profile" element={
+            <ProtectedRoute>
+              <Profile />
             </ProtectedRoute>
           } />
           <Route path="/resume-builder" element={
