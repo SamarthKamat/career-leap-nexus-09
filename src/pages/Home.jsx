@@ -50,8 +50,8 @@ const Home = () => {
               className="space-y-6"
             >
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight drop-shadow-lg">
-                <span className="block text-white">Apply Today and</span>
-                <span className="bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent drop-shadow-[0_2px_2px_rgba(0,0,0,0.8)]">
+                <span className="block text-white mb-2">Apply Today and</span>
+                <span className="block bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent drop-shadow-[0_2px_2px_rgba(0,0,0,0.8)]">
                   Build Your Career
                 </span>
               </h1>
@@ -252,7 +252,7 @@ const Home = () => {
               className="bg-gradient-to-br from-primary-50 to-secondary-50 rounded-lg p-6"
             >
               <img 
-                src="/public/placeholder.svg" 
+                src="resume-scanner.jpg" 
                 alt="AI Resume Scanner" 
                 className="w-full h-auto rounded-lg shadow-lg"
               />

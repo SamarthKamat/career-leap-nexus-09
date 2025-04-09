@@ -16,7 +16,8 @@ const TrainingPrograms = () => {
       level: "Beginner to Intermediate",
       students: 1240,
       rating: 4.8,
-      image: "/placeholder.svg"
+      image: "web-development.jpeg",
+      link:"https://www.udemy.com/course/the-complete-web-development-bootcamp/"
     },
     {
       id: 2,
@@ -26,7 +27,8 @@ const TrainingPrograms = () => {
       level: "Intermediate",
       students: 950,
       rating: 4.7,
-      image: "/placeholder.svg"
+      image: "data-science.jpg",
+      link:"https://www.udemy.com/course/the-data-science-course-complete-data-science-bootcamp/"
     },
     {
       id: 3,
@@ -36,7 +38,8 @@ const TrainingPrograms = () => {
       level: "Intermediate to Advanced",
       students: 780,
       rating: 4.9,
-      image: "/placeholder.svg"
+      image: "cloud-computing.jpg",
+      link:"https://www.udemy.com/course/gcp-google-cloud-professional-devops-engineer-certification/"
     },
     {
       id: 4,
@@ -46,7 +49,8 @@ const TrainingPrograms = () => {
       level: "Intermediate",
       students: 860,
       rating: 4.6,
-      image: "/placeholder.svg"
+      image: "mobile-development.jpg",
+      link:"https://www.udemy.com/course/react-native-mobile-app-development/"
     }
   ];
 
@@ -55,18 +59,17 @@ const TrainingPrograms = () => {
       <Header />
       
       {/* Hero Section */}
-      <section className="bg-gradient-to-r from-primary to-primary-dark text-white py-20">
-        <div className="container mx-auto px-4">
+      <section className="bg-gradient-to-r from-primary via-primary-dark to-slate-900 text-white py-32">
+        <div className="container mx-auto px-4 pt-8">
           <div className="max-w-4xl mx-auto text-center">
-            <h1 className="text-4xl md:text-5xl font-bold mb-6">Industry-Focused Training Programs</h1>
-            <p className="text-xl mb-8">
+            <h1 className="text-4xl md:text-5xl font-bold mb-6 drop-shadow-[0_2px_2px_rgba(0,0,0,0.3)]">
+              Industry-Focused Training Programs
+            </h1>
+            <p className="text-xl mb-8 drop-shadow-[0_1px_1px_rgba(0,0,0,0.3)]">
               Enhance your skills with our specialized programs designed by industry experts
             </p>
             <div className="flex flex-wrap justify-center gap-4">
-              <Link to="#programs" className="btn btn-secondary px-8 py-3">
-                Browse Programs
-              </Link>
-              <Link to="/register" className="btn btn-outline border-white text-white hover:bg-white hover:text-primary px-8 py-3">
+              <Link to="/register" className="btn btn-outline border-2 border-white text-white hover:bg-white hover:text-primary px-8 py-3 shadow-lg">
                 Enroll Now
               </Link>
             </div>
@@ -110,9 +113,14 @@ const TrainingPrograms = () => {
                     </div>
                   </div>
                   
-                  <Link to={`/training/${program.id}`} className="btn btn-primary w-full">
-                    View Details
-                  </Link>
+                  <Link 
+                                to={`${program.link}`} 
+                                className="btn btn-primary w-full"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                              >
+                                View Details
+                              </Link>
                 </div>
               </div>
             ))}
@@ -137,7 +145,7 @@ const TrainingPrograms = () => {
             </div>
             
             <div className="text-center p-6">
-              <div className="bg-secondary-100 text-secondary-600 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+              <div className="bg-primary-100 text-primary-600 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
                 <Users className="h-8 w-8" />
               </div>
               <h3 className="text-xl font-semibold mb-3">Expert Instructors</h3>
@@ -147,7 +155,7 @@ const TrainingPrograms = () => {
             </div>
             
             <div className="text-center p-6">
-              <div className="bg-accent-100 text-accent-600 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+              <div className="bg-primary-100 text-primary-600 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
                 <CheckCircle className="h-8 w-8" />
               </div>
               <h3 className="text-xl font-semibold mb-3">Hands-on Projects</h3>
