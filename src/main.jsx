@@ -10,9 +10,14 @@ if (!import.meta.env.VITE_FIREBASE_API_KEY) {
   console.warn("Firebase configuration is missing. Please add your Firebase credentials to use authentication features.");
 }
 
-createRoot(document.getElementById("root")).render(
-  <React.StrictMode>
-    <App />
-    <Toaster />
-  </React.StrictMode>
-);
+const root = document.getElementById("root");
+if (root) {
+  createRoot(root).render(
+    <React.StrictMode>
+      <App />
+      <Toaster />
+    </React.StrictMode>
+  );
+} else {
+  console.error("Root element not found. Make sure there is a div with id 'root' in your HTML.");
+}
