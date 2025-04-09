@@ -16,6 +16,7 @@ import {
 } from 'lucide-react';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
+import HeroSlideshow from '../components/HeroSlideshow';
 
 const Home = () => {
   useEffect(() => {
@@ -27,166 +28,85 @@ const Home = () => {
       <Header />
       
       {/* Hero Section */}
-      <section className="hero-gradient min-h-screen flex items-center text-white pt-16 relative">
-        {/* Background Image */}
-        <div 
-          className="absolute inset-0 z-0"
-          style={{
-            backgroundImage: 'url("/hero-bg.jpg")',
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-            backgroundRepeat: 'no-repeat',
-            filter: 'brightness(0.7)',
-          }}
-        />
-        
-        {/* Content with higher z-index */}
-        <div className="container mx-auto px-4 py-20 relative z-10">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
-            <motion.div
-              initial={{ opacity: 0, x: -50 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.7 }}
-              className="space-y-6"
-            >
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight drop-shadow-lg">
-                <span className="block text-white mb-2">Apply Today and</span>
-                <span className="block bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent drop-shadow-[0_2px_2px_rgba(0,0,0,0.8)]">
-                  Build Your Career
-                </span>
-              </h1>
-              <p className="text-lg md:text-xl opacity-90">
-                Connect with top employers, develop your skills, and land your dream job
-                through our comprehensive training and placement platform.
-              </p>
-              <div className="flex flex-col sm:flex-row gap-4">
-                <Link 
-                  to="/jobs" 
-                  className="btn btn-primary px-8 py-3 text-lg flex items-center justify-center transition-all duration-300 hover:bg-primary-600 hover:transform hover:scale-105 shadow-lg hover:shadow-xl"
-                >
-                  Browse Jobs
-                </Link>
-                <Link 
-                  to="/training" 
-                  className="btn btn-outline px-8 py-3 text-lg flex items-center justify-center transition-all duration-300 border-2 border-primary text-primary hover:bg-primary hover:text-white hover:transform hover:scale-105 shadow-lg hover:shadow-xl"
-                >
-                  Explore Training <ArrowRight className="ml-2 h-5 w-5" />
-                </Link>
-              </div>
-            </motion.div>
-            
-            <motion.div
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.7, delay: 0.3 }}
-              className="hidden md:flex justify-end"
-            >
-              <div className="bg-white p-8 rounded-lg shadow-xl w-[90%] max-w-md">
-                <h3 className="text-gray-800 text-xl font-bold mb-6 text-center">Resume</h3>
-                <div className="space-y-4 text-gray-600">
-                  <div className="flex items-start">
-                    <div className="h-2 w-2 rounded-full bg-primary mt-2 mr-2"></div>
-                    <p>Professional profile with 3+ years of experience</p>
-                  </div>
-                  <div className="flex items-start">
-                    <div className="h-2 w-2 rounded-full bg-primary mt-2 mr-2"></div>
-                    <p>Bachelor's degree in Computer Science</p>
-                  </div>
-                  <div className="flex items-start">
-                    <div className="h-2 w-2 rounded-full bg-primary mt-2 mr-2"></div>
-                    <p>Technical skills: React, Node.js, Python</p>
-                  </div>
-                  <div className="flex items-start">
-                    <div className="h-2 w-2 rounded-full bg-primary mt-2 mr-2"></div>
-                    <p>Project management and team leadership</p>
-                  </div>
-                </div>
-                <div className="mt-8 text-center">
-                  <Link to="/resume-builder" className="btn btn-primary inline-flex items-center">
-                    Build Your Resume <ArrowRight size={16} className="ml-2" />
-                  </Link>
-                </div>
-              </div>
-            </motion.div>
-          </div>
-        </div>
+      <section className="min-h-[80vh] flex items-center relative">
+        <HeroSlideshow />
       </section>
-      
+
       {/* Services Section */}
-      <section className="py-20 bg-gray-50">
+      <section className="py-24 bg-gradient-to-b from-gray-900 to-gray-800 text-white -mt-0">
         <div className="container mx-auto px-4">
           <div className="text-center max-w-3xl mx-auto mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">Our Services</h2>
-            <p className="text-gray-600 text-lg">
+            <h2 className="text-3xl md:text-5xl font-bold mb-4">Our Services</h2>
+            <p className="text-lg text-gray-300">
               Leading employers already using our platform to find and train future talent
             </p>
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {/* Service 1 */}
+            {/* Service 1 - Resume Builder */}
             <motion.div
               whileHover={{ y: -10 }}
-              className="service-card"
+              className="bg-gray-800/50 backdrop-blur-sm p-8 rounded-xl border border-gray-700 hover:border-primary-500 transition-all duration-300"
             >
-              <div className="service-icon bg-primary-100">
-                <FileText size={32} className="text-primary-600" />
+              <div className="bg-gray-700/50 p-4 rounded-lg mb-6">
+                <FileText size={32} className="text-white" />
               </div>
-              <h3 className="text-xl font-semibold mb-3">Resume Builder</h3>
-              <p className="text-gray-600">
+              <h3 className="text-xl font-semibold mb-3 text-white">Resume Builder</h3>
+              <p className="text-gray-300 mb-6">
                 Create professional resumes with our easy-to-use builder to stand out from the crowd.
               </p>
-              <Link to="/resume-builder" className="mt-4 inline-flex items-center text-primary-600 font-medium">
+              <Link to="/resume-builder" className="inline-flex items-center text-white hover:text-primary-400 font-medium">
                 Get Started <ArrowRight size={16} className="ml-2" />
               </Link>
             </motion.div>
             
-            {/* Service 2 */}
+            {/* Service 2 - Training Programs */}
             <motion.div
               whileHover={{ y: -10 }}
-              className="service-card"
+              className="bg-gray-800/50 backdrop-blur-sm p-8 rounded-xl border border-gray-700 hover:border-primary-500 transition-all duration-300"
             >
-              <div className="service-icon bg-secondary-100">
-                <BookOpen size={32} className="text-secondary-600" />
+              <div className="bg-gray-700/50 p-4 rounded-lg mb-6">
+                <BookOpen size={32} className="text-white" />
               </div>
-              <h3 className="text-xl font-semibold mb-3">Training Programs</h3>
-              <p className="text-gray-600">
+              <h3 className="text-xl font-semibold mb-3 text-white">Training Programs</h3>
+              <p className="text-gray-300 mb-6">
                 Access industry-relevant courses designed to enhance your skills and employability.
               </p>
-              <Link to="/training" className="mt-4 inline-flex items-center text-secondary-600 font-medium">
+              <Link to="/training" className="inline-flex items-center text-white hover:text-primary-400 font-medium">
                 Browse Courses <ArrowRight size={16} className="ml-2" />
               </Link>
             </motion.div>
             
-            {/* Service 3 */}
+            {/* Service 3 - Job Search */}
             <motion.div
               whileHover={{ y: -10 }}
-              className="service-card"
+              className="bg-gray-800/50 backdrop-blur-sm p-8 rounded-xl border border-gray-700 hover:border-primary-500 transition-all duration-300"
             >
-              <div className="service-icon bg-accent-100">
-                <MapPin size={32} className="text-accent-600" />
+              <div className="bg-gray-700/50 p-4 rounded-lg mb-6">
+                <MapPin size={32} className="text-white" />
               </div>
-              <h3 className="text-xl font-semibold mb-3">Job Search</h3>
-              <p className="text-gray-600">
+              <h3 className="text-xl font-semibold mb-3 text-white">Job Search</h3>
+              <p className="text-gray-300 mb-6">
                 Find opportunities that match your skills and career goals from top employers.
               </p>
-              <Link to="/jobs" className="mt-4 inline-flex items-center text-accent-600 font-medium">
+              <Link to="/jobs" className="inline-flex items-center text-white hover:text-primary-400 font-medium">
                 Find Jobs <ArrowRight size={16} className="ml-2" />
               </Link>
             </motion.div>
             
-            {/* Service 4 */}
+            {/* Service 4 - Interview Prep */}
             <motion.div
               whileHover={{ y: -10 }}
-              className="service-card"
+              className="bg-gray-800/50 backdrop-blur-sm p-8 rounded-xl border border-gray-700 hover:border-primary-500 transition-all duration-300"
             >
-              <div className="service-icon bg-primary-100">
-                <Video size={32} className="text-primary-600" />
+              <div className="bg-gray-700/50 p-4 rounded-lg mb-6">
+                <Video size={32} className="text-white" />
               </div>
-              <h3 className="text-xl font-semibold mb-3">Interview Prep</h3>
-              <p className="text-gray-600">
+              <h3 className="text-xl font-semibold mb-3 text-white">Interview Prep</h3>
+              <p className="text-gray-300 mb-6">
                 Practice with simulated interviews and get feedback to improve your performance.
               </p>
-              <Link to="/interview-prep" className="mt-4 inline-flex items-center text-primary-600 font-medium">
+              <Link to="/interview-prep" className="inline-flex items-center text-white hover:text-primary-400 font-medium">
                 Start Practicing <ArrowRight size={16} className="ml-2" />
               </Link>
             </motion.div>

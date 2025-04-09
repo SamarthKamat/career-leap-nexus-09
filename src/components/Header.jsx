@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { Menu, X, ChevronDown, User, LogOut, FileText } from 'lucide-react';
@@ -8,9 +8,22 @@ const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
+  const menuRef = useRef(null);
   const location = useLocation();
   const { currentUser, logout } = useAuth();
 
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (menuRef.current && !menuRef.current.contains(event.target)) {
+        setIsUserMenuOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  // Fix useEffect syntax and placement
   useEffect(() => {
     const handleScroll = () => {
       if (window.scrollY > 10) {
@@ -19,11 +32,12 @@ const Header = () => {
         setIsScrolled(false);
       }
     };
-
+  
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  }, []);  // Fixed syntax here
   
+  // Remove the duplicate useEffect implementation at the bottom of the file
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
   const toggleUserMenu = () => setIsUserMenuOpen(!isUserMenuOpen);
   
@@ -74,13 +88,21 @@ const Header = () => {
           {/* Auth Buttons */}
           <div className="hidden md:flex items-center space-x-4">
             {currentUser ? (
-              <div className="relative">
+              <div className="relative" ref={menuRef}>
                 <button 
-                  className="flex items-center space-x-2 text-gray-700 hover:text-primary-600"
+                  className="flex items-center space-x-2 text-white hover:text-blue-400"
                   onClick={toggleUserMenu}
                 >
-                  <div className="w-8 h-8 rounded-full bg-primary-100 flex items-center justify-center text-primary-600">
-                    {currentUser.displayName ? currentUser.displayName.charAt(0).toUpperCase() : <User size={16} />}
+                  <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-400 to-primary-600 flex items-center justify-center text-white">
+                    {currentUser.photoURL ? (
+                      <img 
+                        src={currentUser.photoURL} 
+                        alt="Profile" 
+                        className="w-full h-full rounded-full object-cover"
+                      />
+                    ) : (
+                      <User size={16} />
+                    )}
                   </div>
                   <span className="font-medium">{currentUser.displayName || 'User'}</span>
                 </button>
@@ -183,6 +205,7 @@ const Header = () => {
       )}
     </header>
   );
+  // Remove the duplicate useEffect block at the end of the file
 };
 
 export default Header;
