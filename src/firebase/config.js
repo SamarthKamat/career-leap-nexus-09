@@ -3,22 +3,29 @@ import { initializeApp } from 'firebase/app';
 import { getAuth } from 'firebase/auth';
 import { getFirestore } from 'firebase/firestore';
 import { getStorage } from 'firebase/storage';
+import { toast } from 'sonner';
 
 const firebaseConfig = {
-  apiKey: "AIzaSyPlaceholder", // Replace with your Firebase API key
-  authDomain: "placement-cell.firebaseapp.com",
-  projectId: "placement-cell",
-  storageBucket: "placement-cell.appspot.com",
-  messagingSenderId: "123456789012",
-  appId: "1:123456789012:web:abcdefghijklmnop"
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY || "AIzaSyPlaceholder",
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN || "placement-cell.firebaseapp.com",
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID || "placement-cell",
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET || "placement-cell.appspot.com",
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID || "123456789012",
+  appId: import.meta.env.VITE_FIREBASE_APP_ID || "1:123456789012:web:abcdefghijklmnop"
 };
 
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
+let app;
+try {
+  // Initialize Firebase
+  app = initializeApp(firebaseConfig);
+} catch (error) {
+  console.error("Firebase initialization error:", error);
+  toast.error("Failed to initialize Firebase. Please check your configuration.");
+}
 
 // Initialize Firebase services
-export const auth = getAuth(app);
-export const db = getFirestore(app);
-export const storage = getStorage(app);
+export const auth = app ? getAuth(app) : null;
+export const db = app ? getFirestore(app) : null;
+export const storage = app ? getStorage(app) : null;
 
 export default app;

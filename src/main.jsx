@@ -1,9 +1,9 @@
 
 import React from 'react';
 import { createRoot } from 'react-dom/client';
-import App from './App.jsx';
+import App from './App';
 import './index.css';
-import { toast } from 'sonner';
+import { toast, Toaster } from 'sonner';
 
 // Show toast message if Firebase config is not set
 if (!import.meta.env.VITE_FIREBASE_API_KEY) {
@@ -18,5 +18,6 @@ if (!import.meta.env.VITE_FIREBASE_API_KEY) {
 createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <App />
+    <Toaster />
   </React.StrictMode>
 );

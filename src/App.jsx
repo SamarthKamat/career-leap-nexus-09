@@ -1,10 +1,9 @@
 
 import React from 'react';
-import { Toaster } from "@/components/ui/sonner";
-import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from './contexts/AuthContext';
+import { Toaster } from "sonner";
 
 // Pages
 import Home from "./pages/Home";
@@ -25,45 +24,43 @@ const queryClient = new QueryClient();
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <AuthProvider>
-      <TooltipProvider>
-        <Toaster />
-        <BrowserRouter>
-          <Routes>
-            {/* Public Routes */}
-            <Route path="/" element={<Home />} />
-            <Route path="/jobs" element={<Jobs />} />
-            <Route path="/training" element={<TrainingPrograms />} />
-            <Route path="/companies" element={<CompanyProfiles />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
-            
-            {/* Protected Routes */}
-            <Route path="/dashboard" element={
-              <ProtectedRoute>
-                <Dashboard />
-              </ProtectedRoute>
-            } />
-            <Route path="/resume-builder" element={
-              <ProtectedRoute>
-                <ResumeBuilder />
-              </ProtectedRoute>
-            } />
-            <Route path="/interview-prep" element={
-              <ProtectedRoute>
-                <InterviewPrep />
-              </ProtectedRoute>
-            } />
-            <Route path="/achievements" element={
-              <ProtectedRoute>
-                <AchievementShowcase />
-              </ProtectedRoute>
-            } />
-            
-            {/* 404 Page */}
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </BrowserRouter>
-      </TooltipProvider>
+      <BrowserRouter>
+        <Routes>
+          {/* Public Routes */}
+          <Route path="/" element={<Home />} />
+          <Route path="/jobs" element={<Jobs />} />
+          <Route path="/training" element={<TrainingPrograms />} />
+          <Route path="/companies" element={<CompanyProfiles />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          
+          {/* Protected Routes */}
+          <Route path="/dashboard" element={
+            <ProtectedRoute>
+              <Dashboard />
+            </ProtectedRoute>
+          } />
+          <Route path="/resume-builder" element={
+            <ProtectedRoute>
+              <ResumeBuilder />
+            </ProtectedRoute>
+          } />
+          <Route path="/interview-prep" element={
+            <ProtectedRoute>
+              <InterviewPrep />
+            </ProtectedRoute>
+          } />
+          <Route path="/achievements" element={
+            <ProtectedRoute>
+              <AchievementShowcase />
+            </ProtectedRoute>
+          } />
+          
+          {/* 404 Page */}
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </BrowserRouter>
+      <Toaster />
     </AuthProvider>
   </QueryClientProvider>
 );
