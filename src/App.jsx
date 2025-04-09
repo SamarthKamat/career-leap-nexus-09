@@ -13,10 +13,17 @@ import InterviewPrep from "./pages/InterviewPrep";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
+import EmployerDashboard from "./pages/EmployerDashboard";
 import CompanyProfiles from "./pages/CompanyProfiles";
 import AchievementShowcase from "./pages/AchievementShowcase";
 import NotFound from "./pages/NotFound";
 import ProtectedRoute from './components/ProtectedRoute';
+
+// Employer Dashboard Pages
+import PostJob from "./pages/employer/PostJob";
+import ManageJobs from "./pages/employer/ManageJobs";
+import Candidates from "./pages/employer/Candidates";
+import Interviews from "./pages/employer/Interviews";
 
 const queryClient = new QueryClient();
 
@@ -37,6 +44,33 @@ const App = () => (
           <Route path="/dashboard" element={
             <ProtectedRoute>
               <Dashboard />
+            </ProtectedRoute>
+          } />
+          <Route path="/employer-dashboard" element={
+            <ProtectedRoute>
+              <EmployerDashboard />
+            </ProtectedRoute>
+          } />
+          
+          {/* Employer Dashboard Inner Routes */}
+          <Route path="/employer-dashboard/post-job" element={
+            <ProtectedRoute>
+              <PostJob />
+            </ProtectedRoute>
+          } />
+          <Route path="/employer-dashboard/manage-jobs" element={
+            <ProtectedRoute>
+              <ManageJobs />
+            </ProtectedRoute>
+          } />
+          <Route path="/employer-dashboard/candidates" element={
+            <ProtectedRoute>
+              <Candidates />
+            </ProtectedRoute>
+          } />
+          <Route path="/employer-dashboard/interviews" element={
+            <ProtectedRoute>
+              <Interviews />
             </ProtectedRoute>
           } />
           <Route path="/resume-builder" element={

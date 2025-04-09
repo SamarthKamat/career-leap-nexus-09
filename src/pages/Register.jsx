@@ -79,10 +79,24 @@ const Register = () => {
         displayName: fullName
       });
       
-      // Store additional user info in Firestore (could be implemented later)
+      // Store additional user info in Firestore
+      const { db } = await import('../firebase/config');
+      const { doc, setDoc } = await import('firebase/firestore');
+      
+      await setDoc(doc(db, "users", userCredential.user.uid), {
+        fullName,
+        email,
+        userType,
+        createdAt: new Date()
+      })
       
       toast.success('Account created successfully!');
-      navigate('/dashboard');
+      // Navigate to the appropriate dashboard based on user type
+      if (userType === 'employer') {
+        navigate('/employer-dashboard');
+      } else {
+        navigate('/dashboard');
+      }
     } catch (error) {
       console.error('Registration error:', error);
       let errorMessage = 'Failed to create an account';
