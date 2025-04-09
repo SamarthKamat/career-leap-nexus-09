@@ -9,15 +9,14 @@ const PostJob = () => {
   const { currentUser } = useAuth();
   const navigate = useNavigate();
   const [isSubmitting, setIsSubmitting] = useState(false);
-  
-  // Form state
+
   const [formData, setFormData] = useState({
     title: '',
     company: '',
     location: '',
-    locationType: 'onsite', // onsite, remote, hybrid
-    employmentType: 'full-time', // full-time, part-time, contract, internship
-    experienceLevel: 'mid-level', // entry-level, mid-level, senior, executive
+    locationType: 'onsite',
+    employmentType: 'full-time',
+    experienceLevel: 'mid-level',
     salaryMin: '',
     salaryMax: '',
     description: '',
@@ -28,34 +27,29 @@ const PostJob = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      [name]: value
+      [name]: value,
     }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
-    
+
     try {
-      // Here you would typically save the job posting to your database
-      // For example using Firebase:
-      // const { doc, setDoc, collection } = await import('firebase/firestore');
-      // const { db } = await import('../../firebase/config');
-      // const jobRef = doc(collection(db, "jobs"));
-      // await setDoc(jobRef, {
-      //   ...formData,
-      //   employerId: currentUser.uid,
-      //   employerName: currentUser.displayName,
-      //   createdAt: new Date(),
-      //   status: 'active'
-      // });
-      
-      // Show success message
+      const { addDoc, collection, serverTimestamp } = await import('firebase/firestore');
+      const { db } = await import('../../firebase/config');
+
+      await addDoc(collection(db, 'jobs'), {
+        ...formData,
+        employerId: currentUser.uid,
+        employerName: currentUser.displayName,
+        createdAt: serverTimestamp(),
+        status: 'active',
+      });
+
       alert('Job posted successfully!');
-      
-      // Redirect to manage jobs page
       navigate('/employer-dashboard/manage-jobs');
     } catch (error) {
       console.error('Error posting job:', error);
@@ -68,7 +62,7 @@ const PostJob = () => {
   return (
     <>
       <Header />
-      
+
       <div className="bg-gray-50 min-h-screen py-20">
         <div className="container mx-auto px-4 max-w-4xl">
           <div className="bg-white rounded-lg shadow-md p-8">
@@ -76,17 +70,15 @@ const PostJob = () => {
               <Briefcase className="mr-2 h-6 w-6 text-primary-600" />
               Post a New Job
             </h1>
-            
+
             <form onSubmit={handleSubmit} className="space-y-6">
               {/* Job Basics */}
               <div className="space-y-4">
                 <h2 className="text-xl font-semibold border-b pb-2">Job Basics</h2>
-                
+
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
-                    <label htmlFor="title" className="block text-sm font-medium text-gray-700 mb-1">
-                      Job Title*
-                    </label>
+                    <label htmlFor="title" className="block text-sm font-medium text-gray-700 mb-1">Job Title*</label>
                     <input
                       type="text"
                       id="title"
@@ -98,11 +90,9 @@ const PostJob = () => {
                       placeholder="e.g. Senior Frontend Developer"
                     />
                   </div>
-                  
+
                   <div>
-                    <label htmlFor="company" className="block text-sm font-medium text-gray-700 mb-1">
-                      Company Name*
-                    </label>
+                    <label htmlFor="company" className="block text-sm font-medium text-gray-700 mb-1">Company Name*</label>
                     <input
                       type="text"
                       id="company"
@@ -115,16 +105,12 @@ const PostJob = () => {
                     />
                   </div>
                 </div>
-                
+
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
-                    <label htmlFor="location" className="block text-sm font-medium text-gray-700 mb-1">
-                      Location
-                    </label>
+                    <label htmlFor="location" className="block text-sm font-medium text-gray-700 mb-1">Location</label>
                     <div className="relative">
-                      <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                        <MapPin className="h-5 w-5 text-gray-400" />
-                      </div>
+                      <MapPin className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
                       <input
                         type="text"
                         id="location"
@@ -136,11 +122,9 @@ const PostJob = () => {
                       />
                     </div>
                   </div>
-                  
+
                   <div>
-                    <label htmlFor="locationType" className="block text-sm font-medium text-gray-700 mb-1">
-                      Location Type*
-                    </label>
+                    <label htmlFor="locationType" className="block text-sm font-medium text-gray-700 mb-1">Location Type*</label>
                     <select
                       id="locationType"
                       name="locationType"
@@ -155,16 +139,12 @@ const PostJob = () => {
                     </select>
                   </div>
                 </div>
-                
+
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
-                    <label htmlFor="employmentType" className="block text-sm font-medium text-gray-700 mb-1">
-                      Employment Type*
-                    </label>
+                    <label htmlFor="employmentType" className="block text-sm font-medium text-gray-700 mb-1">Employment Type*</label>
                     <div className="relative">
-                      <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                        <Clock className="h-5 w-5 text-gray-400" />
-                      </div>
+                      <Clock className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
                       <select
                         id="employmentType"
                         name="employmentType"
@@ -180,15 +160,11 @@ const PostJob = () => {
                       </select>
                     </div>
                   </div>
-                  
+
                   <div>
-                    <label htmlFor="experienceLevel" className="block text-sm font-medium text-gray-700 mb-1">
-                      Experience Level*
-                    </label>
+                    <label htmlFor="experienceLevel" className="block text-sm font-medium text-gray-700 mb-1">Experience Level*</label>
                     <div className="relative">
-                      <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                        <Users className="h-5 w-5 text-gray-400" />
-                      </div>
+                      <Users className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
                       <select
                         id="experienceLevel"
                         name="experienceLevel"
@@ -205,16 +181,12 @@ const PostJob = () => {
                     </div>
                   </div>
                 </div>
-                
+
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
-                    <label htmlFor="salaryMin" className="block text-sm font-medium text-gray-700 mb-1">
-                      Salary Range (Min)
-                    </label>
+                    <label htmlFor="salaryMin" className="block text-sm font-medium text-gray-700 mb-1">Salary Range (Min)</label>
                     <div className="relative">
-                      <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                        <DollarSign className="h-5 w-5 text-gray-400" />
-                      </div>
+                      <DollarSign className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
                       <input
                         type="number"
                         id="salaryMin"
@@ -226,15 +198,11 @@ const PostJob = () => {
                       />
                     </div>
                   </div>
-                  
+
                   <div>
-                    <label htmlFor="salaryMax" className="block text-sm font-medium text-gray-700 mb-1">
-                      Salary Range (Max)
-                    </label>
+                    <label htmlFor="salaryMax" className="block text-sm font-medium text-gray-700 mb-1">Salary Range (Max)</label>
                     <div className="relative">
-                      <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                        <DollarSign className="h-5 w-5 text-gray-400" />
-                      </div>
+                      <DollarSign className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
                       <input
                         type="number"
                         id="salaryMax"
@@ -247,15 +215,11 @@ const PostJob = () => {
                     </div>
                   </div>
                 </div>
-                
+
                 <div>
-                  <label htmlFor="applicationDeadline" className="block text-sm font-medium text-gray-700 mb-1">
-                    Application Deadline
-                  </label>
+                  <label htmlFor="applicationDeadline" className="block text-sm font-medium text-gray-700 mb-1">Application Deadline</label>
                   <div className="relative">
-                    <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                      <Calendar className="h-5 w-5 text-gray-400" />
-                    </div>
+                    <Calendar className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
                     <input
                       type="date"
                       id="applicationDeadline"
@@ -267,15 +231,13 @@ const PostJob = () => {
                   </div>
                 </div>
               </div>
-              
+
               {/* Job Details */}
               <div className="space-y-4">
                 <h2 className="text-xl font-semibold border-b pb-2">Job Details</h2>
-                
+
                 <div>
-                  <label htmlFor="description" className="block text-sm font-medium text-gray-700 mb-1">
-                    Job Description*
-                  </label>
+                  <label htmlFor="description" className="block text-sm font-medium text-gray-700 mb-1">Job Description*</label>
                   <textarea
                     id="description"
                     name="description"
@@ -287,11 +249,9 @@ const PostJob = () => {
                     placeholder="Describe the role, responsibilities, and ideal candidate..."
                   ></textarea>
                 </div>
-                
+
                 <div>
-                  <label htmlFor="requirements" className="block text-sm font-medium text-gray-700 mb-1">
-                    Requirements*
-                  </label>
+                  <label htmlFor="requirements" className="block text-sm font-medium text-gray-700 mb-1">Requirements*</label>
                   <textarea
                     id="requirements"
                     name="requirements"
@@ -302,15 +262,11 @@ const PostJob = () => {
                     className="input-field w-full"
                     placeholder="List the skills, qualifications, and experience required..."
                   ></textarea>
-                  <p className="text-xs text-gray-500 mt-1">
-                    Tip: Use bullet points for better readability (e.g. - 3+ years of experience)
-                  </p>
+                  <p className="text-xs text-gray-500 mt-1">Tip: Use bullet points for better readability.</p>
                 </div>
-                
+
                 <div>
-                  <label htmlFor="benefits" className="block text-sm font-medium text-gray-700 mb-1">
-                    Benefits
-                  </label>
+                  <label htmlFor="benefits" className="block text-sm font-medium text-gray-700 mb-1">Benefits</label>
                   <textarea
                     id="benefits"
                     name="benefits"
@@ -318,18 +274,18 @@ const PostJob = () => {
                     onChange={handleChange}
                     rows={4}
                     className="input-field w-full"
-                    placeholder="List the benefits, perks, and advantages of working at your company..."
+                    placeholder="List the benefits and perks..."
                   ></textarea>
                 </div>
               </div>
-              
+
               <div className="bg-blue-50 p-4 rounded-md flex items-start">
                 <Info className="h-5 w-5 text-blue-500 mt-0.5 mr-2 flex-shrink-0" />
                 <p className="text-sm text-blue-700">
                   Your job posting will be reviewed before being published. Make sure all information is accurate and follows our community guidelines.
                 </p>
               </div>
-              
+
               <div className="flex justify-end space-x-4">
                 <button
                   type="button"
@@ -350,7 +306,7 @@ const PostJob = () => {
           </div>
         </div>
       </div>
-      
+
       <Footer />
     </>
   );

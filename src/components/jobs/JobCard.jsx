@@ -1,9 +1,11 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Building, MapPin, ChevronDown } from 'lucide-react';
+import JobApplicationForm from './JobApplicationForm';
 
 const JobCard = ({ job, onJobClick }) => {
+  const [showApplicationForm, setShowApplicationForm] = useState(false);
   return (
     <motion.div
       key={job.id}
@@ -44,7 +46,7 @@ const JobCard = ({ job, onJobClick }) => {
           
           {/* Skills */}
           <div className="mt-3 flex flex-wrap gap-2">
-            {job.skills.map((skill, index) => (
+            {(job.skills || []).map((skill, index) => (
               <span
                 key={index}
                 className="bg-gray-100 text-gray-800 text-xs px-2 py-1 rounded"
@@ -59,7 +61,12 @@ const JobCard = ({ job, onJobClick }) => {
         <div className="mt-4 md:mt-0 md:ml-6 flex flex-col items-start md:items-end">
           <div className="text-lg font-bold text-gray-900">{job.salary}</div>
           <div className="text-sm text-gray-600 mb-4">{job.experience}</div>
-          <button className="btn btn-primary">Apply Now</button>
+          <button 
+            onClick={() => setShowApplicationForm(true)} 
+            className="btn btn-primary"
+          >
+            Apply Now
+          </button>
         </div>
       </div>
       
@@ -73,6 +80,12 @@ const JobCard = ({ job, onJobClick }) => {
           View Details <ChevronDown className="h-4 w-4 ml-1" />
         </button>
       </div>
+      {showApplicationForm && (
+        <JobApplicationForm 
+          job={job} 
+          onClose={() => setShowApplicationForm(false)} 
+        />
+      )}
     </motion.div>
   );
 };
