@@ -27,8 +27,21 @@ const Home = () => {
       <Header />
       
       {/* Hero Section */}
-      <section className="hero-gradient min-h-screen flex items-center text-white pt-16">
-        <div className="container mx-auto px-4 py-20">
+      <section className="hero-gradient min-h-screen flex items-center text-white pt-16 relative">
+        {/* Background Image */}
+        <div 
+          className="absolute inset-0 z-0"
+          style={{
+            backgroundImage: 'url("/hero-bg.jpg")',
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            backgroundRepeat: 'no-repeat',
+            filter: 'brightness(0.7)',
+          }}
+        />
+        
+        {/* Content with higher z-index */}
+        <div className="container mx-auto px-4 py-20 relative z-10">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
             <motion.div
               initial={{ opacity: 0, x: -50 }}
@@ -36,20 +49,28 @@ const Home = () => {
               transition={{ duration: 0.7 }}
               className="space-y-6"
             >
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight">
-                <span className="block">Apply Today and</span>
-                <span className="text-secondary-200">Build Your Career</span>
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight drop-shadow-lg">
+                <span className="block text-white">Apply Today and</span>
+                <span className="bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent drop-shadow-[0_2px_2px_rgba(0,0,0,0.8)]">
+                  Build Your Career
+                </span>
               </h1>
               <p className="text-lg md:text-xl opacity-90">
                 Connect with top employers, develop your skills, and land your dream job
                 through our comprehensive training and placement platform.
               </p>
               <div className="flex flex-col sm:flex-row gap-4">
-                <Link to="/jobs" className="btn btn-primary px-8 py-3 text-lg">
+                <Link 
+                  to="/jobs" 
+                  className="btn btn-primary px-8 py-3 text-lg flex items-center justify-center transition-all duration-300 hover:bg-primary-600 hover:transform hover:scale-105 shadow-lg hover:shadow-xl"
+                >
                   Browse Jobs
                 </Link>
-                <Link to="/training" className="btn btn-outline border-white text-white hover:bg-white hover:text-primary px-8 py-3 text-lg">
-                  Explore Training
+                <Link 
+                  to="/training" 
+                  className="btn btn-outline px-8 py-3 text-lg flex items-center justify-center transition-all duration-300 border-2 border-primary text-primary hover:bg-primary hover:text-white hover:transform hover:scale-105 shadow-lg hover:shadow-xl"
+                >
+                  Explore Training <ArrowRight className="ml-2 h-5 w-5" />
                 </Link>
               </div>
             </motion.div>
