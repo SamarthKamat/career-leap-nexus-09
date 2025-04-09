@@ -81,18 +81,17 @@ const CompanyProfiles = () => {
       <Header />
       
       {/* Hero Section */}
-      <section className="bg-gradient-to-r from-primary to-primary-dark text-white py-20">
-        <div className="container mx-auto px-4">
+      <section className="bg-gradient-to-br from-primary via-blue-800 to-slate-900 text-white py-28">
+        <div className="container mx-auto px-4 pt-8">
           <div className="max-w-4xl mx-auto text-center">
-            <h1 className="text-4xl md:text-5xl font-bold mb-6">Partner Companies</h1>
-            <p className="text-xl mb-8">
+            <h1 className="text-4xl md:text-5xl font-bold mb-6 drop-shadow-[0_2px_2px_rgba(0,0,0,0.4)]">
+              Partner Companies
+            </h1>
+            <p className="text-xl mb-6 text-gray-100 drop-shadow-[0_1px_1px_rgba(0,0,0,0.3)]">
               Discover top employers actively recruiting from our talent pool
             </p>
             <div className="flex flex-wrap justify-center gap-4">
-              <Link to="#companies" className="btn btn-secondary px-8 py-3">
-                Browse Companies
-              </Link>
-              <Link to="/jobs" className="btn btn-outline border-white text-white hover:bg-white hover:text-primary px-8 py-3">
+              <Link to="/jobs" className="btn btn-outline border-2 border-white text-white hover:bg-white hover:text-primary px-8 py-3 shadow-lg transition-all duration-300">
                 View Open Positions
               </Link>
             </div>
