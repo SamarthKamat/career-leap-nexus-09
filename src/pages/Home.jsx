@@ -27,8 +27,21 @@ const Home = () => {
       <Header />
       
       {/* Hero Section */}
-      <section className="hero-gradient min-h-screen flex items-center text-white pt-16">
-        <div className="container mx-auto px-4 py-20">
+      <section className="hero-gradient min-h-screen flex items-center text-white pt-16 relative">
+        {/* Background Image */}
+        <div 
+          className="absolute inset-0 z-0"
+          style={{
+            backgroundImage: 'url("/hero-bg.jpg")',
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            backgroundRepeat: 'no-repeat',
+            filter: 'brightness(0.7)',
+          }}
+        />
+        
+        {/* Content with higher z-index */}
+        <div className="container mx-auto px-4 py-20 relative z-10">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
             <motion.div
               initial={{ opacity: 0, x: -50 }}
@@ -36,20 +49,28 @@ const Home = () => {
               transition={{ duration: 0.7 }}
               className="space-y-6"
             >
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight">
-                <span className="block">Apply Today and</span>
-                <span className="text-secondary-200">Build Your Career</span>
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight drop-shadow-lg">
+                <span className="block text-white">Apply Today and</span>
+                <span className="bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent drop-shadow-[0_2px_2px_rgba(0,0,0,0.8)]">
+                  Build Your Career
+                </span>
               </h1>
               <p className="text-lg md:text-xl opacity-90">
                 Connect with top employers, develop your skills, and land your dream job
                 through our comprehensive training and placement platform.
               </p>
               <div className="flex flex-col sm:flex-row gap-4">
-                <Link to="/jobs" className="btn btn-primary px-8 py-3 text-lg">
+                <Link 
+                  to="/jobs" 
+                  className="btn btn-primary px-8 py-3 text-lg flex items-center justify-center transition-all duration-300 hover:bg-primary-600 hover:transform hover:scale-105 shadow-lg hover:shadow-xl"
+                >
                   Browse Jobs
                 </Link>
-                <Link to="/training" className="btn btn-outline border-white text-white hover:bg-white hover:text-primary px-8 py-3 text-lg">
-                  Explore Training
+                <Link 
+                  to="/training" 
+                  className="btn btn-outline px-8 py-3 text-lg flex items-center justify-center transition-all duration-300 border-2 border-primary text-primary hover:bg-primary hover:text-white hover:transform hover:scale-105 shadow-lg hover:shadow-xl"
+                >
+                  Explore Training <ArrowRight className="ml-2 h-5 w-5" />
                 </Link>
               </div>
             </motion.div>
@@ -287,7 +308,7 @@ const Home = () => {
                 </div>
               </div>
               <p className="text-gray-600">
-                "Thanks to CareerLeap's training programs and resume builder, I was able to land my dream job at TechCorp. The interview preparation tools were invaluable during my job search."
+                "Thanks to JobGPT's training programs and resume builder, I was able to land my dream job at TechCorp. The interview preparation tools were invaluable during my job search."
               </p>
               <div className="flex text-yellow-400 mt-4">
                 <span>★</span>
@@ -310,7 +331,7 @@ const Home = () => {
                 </div>
               </div>
               <p className="text-gray-600">
-                "As an employer, CareerLeap has made our recruitment process significantly more efficient. We've found exceptionally talented candidates who were well-prepared for their roles."
+                "As an employer, JobGPT has made our recruitment process significantly more efficient. We've found exceptionally talented candidates who were well-prepared for their roles."
               </p>
               <div className="flex text-yellow-400 mt-4">
                 <span>★</span>
@@ -352,7 +373,7 @@ const Home = () => {
         <div className="container mx-auto px-4 text-center">
           <h2 className="text-3xl md:text-4xl font-bold mb-6">Ready to Advance Your Career?</h2>
           <p className="text-xl mb-8 max-w-2xl mx-auto">
-            Join thousands of students and professionals who have transformed their careers through our platform
+            Join thousands of students and professionals who have transformed their careers through JobGPT
           </p>
           <div className="flex flex-col sm:flex-row justify-center gap-4">
             <Link to="/register" className="btn bg-white text-primary hover:bg-gray-100 px-8 py-3 text-lg">
