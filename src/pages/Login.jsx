@@ -165,6 +165,19 @@ const Login = () => {
             <div className="mt-6 grid grid-cols-2 gap-3">
               <button
                 type="button"
+                onClick={async () => {
+                  try {
+                    setIsLoading(true);
+                    await signInWithGoogle();
+                    toast.success('Successfully signed in with Google!');
+                    navigate('/dashboard');
+                  } catch (error) {
+                    toast.error(error.message || 'Failed to sign in with Google');
+                  } finally {
+                    setIsLoading(false);
+                  }
+                }}
+                disabled={isLoading}
                 className="btn border border-gray-300 bg-white hover:bg-gray-50 text-gray-700"
               >
                 <span className="sr-only">Sign in with Google</span>
@@ -181,6 +194,19 @@ const Login = () => {
               
               <button
                 type="button"
+                onClick={async () => {
+                  try {
+                    setIsLoading(true);
+                    await signInWithGitHub();
+                    toast.success('Successfully signed in with GitHub!');
+                    navigate('/dashboard');
+                  } catch (error) {
+                    toast.error(error.message || 'Failed to sign in with GitHub');
+                  } finally {
+                    setIsLoading(false);
+                  }
+                }}
+                disabled={isLoading}
                 className="btn border border-gray-300 bg-white hover:bg-gray-50 text-gray-700"
               >
                 <span className="sr-only">Sign in with GitHub</span>

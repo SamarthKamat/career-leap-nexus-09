@@ -1,6 +1,6 @@
 
 import { initializeApp } from 'firebase/app';
-import { getAuth } from 'firebase/auth';
+import { getAuth, GoogleAuthProvider, GithubAuthProvider } from 'firebase/auth';
 import { getFirestore } from 'firebase/firestore';
 import { getStorage } from 'firebase/storage';
 import { toast } from 'sonner';
@@ -28,6 +28,8 @@ let app;
 let auth;
 let db;
 let storage;
+let googleProvider;
+let githubProvider;
 
 try {
   // Initialize Firebase
@@ -49,6 +51,19 @@ try {
 
   db = getFirestore(app);
   storage = getStorage(app);
+  
+  // Initialize auth providers
+  googleProvider = new GoogleAuthProvider();
+  githubProvider = new GithubAuthProvider();
+  
+  // Configure providers
+  googleProvider.setCustomParameters({
+    prompt: 'select_account'
+  });
+  
+  githubProvider.setCustomParameters({
+    prompt: 'consent'
+  });
 } catch (error) {
   console.error("Firebase initialization error:", error);
   toast.error('Failed to initialize Firebase. Please refresh the page.');
