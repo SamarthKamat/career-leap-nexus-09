@@ -19,34 +19,75 @@ export function useAuth() {
 export function AuthProvider({ children }) {
   const [currentUser, setCurrentUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  function signup(email, password) {
-    return createUserWithEmailAndPassword(auth, email, password);
+  async function signup(email, password) {
+    try {
+      setError(null);
+      const result = await createUserWithEmailAndPassword(auth, email, password);
+      return result;
+    } catch (error) {
+      setError(error.message);
+      throw error;
+    }
   }
 
-  function login(email, password) {
-    return signInWithEmailAndPassword(auth, email, password);
+  async function login(email, password) {
+    try {
+      setError(null);
+      const result = await signInWithEmailAndPassword(auth, email, password);
+      return result;
+    } catch (error) {
+      setError(error.message);
+      throw error;
+    }
   }
 
-  function logout() {
-    return signOut(auth);
+  async function logout() {
+    try {
+      setError(null);
+      await signOut(auth);
+    } catch (error) {
+      setError(error.message);
+      throw error;
+    }
   }
 
-  function resetPassword(email) {
-    return sendPasswordResetEmail(auth, email);
+  async function resetPassword(email) {
+    try {
+      setError(null);
+      await sendPasswordResetEmail(auth, email);
+    } catch (error) {
+      setError(error.message);
+      throw error;
+    }
   }
 
-  function updateUserProfile(user, data) {
-    return updateProfile(user, data);
+  async function updateUserProfile(user, data) {
+    try {
+      setError(null);
+      await updateProfile(user, data);
+    } catch (error) {
+      setError(error.message);
+      throw error;
+    }
   }
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      setCurrentUser(user);
-      setLoading(false);
-    });
+    const unsubscribe = onAuthStateChanged(auth, 
+      (user) => {
+        setCurrentUser(user);
+        setLoading(false);
+        setError(null);
+      },
+      (error) => {
+        console.error('Auth state change error:', error);
+        setError(error.message);
+        setLoading(false);
+      }
+    );
 
-    return unsubscribe;
+    return () => unsubscribe();
   }, []);
 
   const value = {
