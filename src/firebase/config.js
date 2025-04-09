@@ -15,17 +15,20 @@ const firebaseConfig = {
 };
 
 let app;
+let auth;
+let db;
+let storage;
+
 try {
   // Initialize Firebase
   app = initializeApp(firebaseConfig);
+  auth = getAuth(app);
+  db = getFirestore(app);
+  storage = getStorage(app);
 } catch (error) {
   console.error("Firebase initialization error:", error);
-  toast.error("Failed to initialize Firebase. Please check your configuration.");
+  // Don't show a toast here as it might fail before the UI is loaded
 }
 
-// Initialize Firebase services
-export const auth = app ? getAuth(app) : null;
-export const db = app ? getFirestore(app) : null;
-export const storage = app ? getStorage(app) : null;
-
+export { auth, db, storage };
 export default app;

@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Search, MapPin, Briefcase, Building, Filter, X, ChevronDown } from 'lucide-react';
@@ -98,8 +97,7 @@ const Jobs = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
     
-    // Filter jobs based on search term and filters
-    const results = jobsData.filter(job => {
+    setFilteredJobs(jobsData.filter(job => {
       const matchesSearch = 
         job.title.toLowerCase().includes(searchTerm.toLowerCase()) || 
         job.company.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -116,9 +114,7 @@ const Jobs = () => {
         experienceFilter === '' || job.experience.toLowerCase().includes(experienceFilter.toLowerCase());
       
       return matchesSearch && matchesLocation && matchesJobType && matchesExperience;
-    });
-    
-    setFilteredJobs(results);
+    }));
   }, [searchTerm, locationFilter, jobTypeFilter, experienceFilter]);
 
   const resetFilters = () => {
