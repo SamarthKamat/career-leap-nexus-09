@@ -39,33 +39,33 @@ const Header = () => {
 
   return (
     <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-      isScrolled ? 'bg-white shadow-md py-2' : 'bg-transparent py-4'
+      isScrolled ? 'bg-gradient-to-r from-slate-900 to-slate-800 shadow-lg py-4' : 'bg-transparent py-6'
     }`}>
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="container mx-auto px-6 sm:px-8 lg:px-12">
         <div className="flex items-center justify-between">
-          <Link to="/" className="flex items-center">
-            <div className="text-2xl font-bold text-primary-600 flex items-center">
-              <span className="text-primary">Career</span>
-              <span className="text-secondary">Leap</span>
+          <Link to="/" className="flex items-center space-x-2">
+            <div className="text-2xl font-bold flex items-center">
+              <span className="text-blue-400">Job</span>
+              <span className="bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">GPT</span>
             </div>
           </Link>
 
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center space-x-1">
-            <Link to="/" className={`nav-link ${location.pathname === '/' ? 'nav-link-active' : ''}`}>Home</Link>
-            <Link to="/jobs" className={`nav-link ${location.pathname === '/jobs' ? 'nav-link-active' : ''}`}>Jobs</Link>
-            <Link to="/training" className={`nav-link ${location.pathname === '/training' ? 'nav-link-active' : ''}`}>Training</Link>
-            <Link to="/companies" className={`nav-link ${location.pathname === '/companies' ? 'nav-link-active' : ''}`}>Companies</Link>
+          <nav className="hidden md:flex items-center space-x-20">
+            <Link to="/" className={`nav-link ${location.pathname === '/' ? 'nav-link-active text-blue-400' : 'text-gray-200 hover:text-blue-400'}`}>Home</Link>
+            <Link to="/jobs" className={`nav-link ${location.pathname === '/jobs' ? 'nav-link-active text-blue-400' : 'text-gray-200 hover:text-blue-400'}`}>Jobs</Link>
+            <Link to="/training" className={`nav-link ${location.pathname === '/training' ? 'nav-link-active text-blue-400' : 'text-gray-200 hover:text-blue-400'}`}>Training</Link>
+            <Link to="/companies" className={`nav-link ${location.pathname === '/companies' ? 'nav-link-active text-blue-400' : 'text-gray-200 hover:text-blue-400'}`}>Companies</Link>
             
             <div className="relative group">
-              <button className="nav-link flex items-center">
+              <button className="nav-link flex items-center text-gray-200 hover:text-blue-400">
                 Resources <ChevronDown className="ml-1 h-4 w-4" />
               </button>
-              <div className="absolute z-10 left-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 origin-top-left">
+              <div className="absolute z-10 left-0 mt-2 w-48 rounded-md shadow-lg bg-slate-800 ring-1 ring-black ring-opacity-5 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 origin-top-left">
                 <div className="py-1">
-                  <Link to="/resume-builder" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Resume Builder</Link>
-                  <Link to="/interview-prep" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Interview Preparation</Link>
-                  <Link to="/achievements" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Achievements</Link>
+                  <Link to="/resume-builder" className="block px-4 py-2 text-sm text-gray-200 hover:bg-slate-700">Resume Builder</Link>
+                  <Link to="/interview-prep" className="block px-4 py-2 text-sm text-gray-200 hover:bg-slate-700">Interview Preparation</Link>
+                  <Link to="/achievements" className="block px-4 py-2 text-sm text-gray-200 hover:bg-slate-700">Achievements</Link>
                 </div>
               </div>
             </div>
@@ -103,8 +103,8 @@ const Header = () => {
               </div>
             ) : (
               <>
-                <Link to="/login" className="btn btn-outline">Login</Link>
-                <Link to="/register" className="btn btn-primary">Sign Up</Link>
+                <Link to="/login" className="px-6 py-2 text-gray-200 hover:text-blue-400 border border-gray-200 hover:border-blue-400 rounded-md transition-colors duration-200">Login</Link>
+                <Link to="/register" className="px-6 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-md transition-colors duration-200">Sign Up</Link>
               </>
             )}
           </div>

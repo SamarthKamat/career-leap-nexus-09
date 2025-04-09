@@ -308,7 +308,7 @@ const Home = () => {
                 </div>
               </div>
               <p className="text-gray-600">
-                "Thanks to CareerLeap's training programs and resume builder, I was able to land my dream job at TechCorp. The interview preparation tools were invaluable during my job search."
+                "Thanks to JobGPT's training programs and resume builder, I was able to land my dream job at TechCorp. The interview preparation tools were invaluable during my job search."
               </p>
               <div className="flex text-yellow-400 mt-4">
                 <span>★</span>
@@ -331,7 +331,7 @@ const Home = () => {
                 </div>
               </div>
               <p className="text-gray-600">
-                "As an employer, CareerLeap has made our recruitment process significantly more efficient. We've found exceptionally talented candidates who were well-prepared for their roles."
+                "As an employer, JobGPT has made our recruitment process significantly more efficient. We've found exceptionally talented candidates who were well-prepared for their roles."
               </p>
               <div className="flex text-yellow-400 mt-4">
                 <span>★</span>
@@ -373,7 +373,7 @@ const Home = () => {
         <div className="container mx-auto px-4 text-center">
           <h2 className="text-3xl md:text-4xl font-bold mb-6">Ready to Advance Your Career?</h2>
           <p className="text-xl mb-8 max-w-2xl mx-auto">
-            Join thousands of students and professionals who have transformed their careers through our platform
+            Join thousands of students and professionals who have transformed their careers through JobGPT
           </p>
           <div className="flex flex-col sm:flex-row justify-center gap-4">
             <Link to="/register" className="btn bg-white text-primary hover:bg-gray-100 px-8 py-3 text-lg">
