@@ -6,7 +6,7 @@ import Footer from '../components/Footer';
 import { useAuth } from '../contexts/AuthContext';
 import { 
   Award, 
-  Certificate, 
+  Scroll, 
   TrendingUp, 
   Clock, 
   Calendar, 
@@ -128,7 +128,7 @@ const AchievementShowcase = () => {
             <div className="bg-white rounded-lg shadow-md p-6">
               <div className="flex items-center mb-2">
                 <div className="p-2 rounded-full bg-secondary-100 mr-3">
-                  <Certificate className="h-6 w-6 text-secondary-600" />
+                  <Scroll className="h-6 w-6 text-secondary-600" />
                 </div>
                 <h2 className="font-semibold text-lg">Mock Interviews</h2>
               </div>
@@ -159,7 +159,7 @@ const AchievementShowcase = () => {
           {/* Certifications */}
           <div className="bg-white rounded-lg shadow-md p-6 mb-6">
             <h2 className="text-xl font-semibold mb-4 flex items-center">
-              <Certificate className="h-5 w-5 mr-2" />
+              <Scroll className="h-5 w-5 mr-2" />
               Certifications
             </h2>
             
