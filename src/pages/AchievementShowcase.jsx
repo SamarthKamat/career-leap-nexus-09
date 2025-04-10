@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Link } from 'react-router-dom';
-import Header from '../components/Header';
+import Header from '../components/Authheader';
 import Footer from '../components/Footer';
 import { useAuth } from '../contexts/AuthContext';
 import { 
@@ -25,21 +25,21 @@ const AchievementShowcase = () => {
       title: "Web Development Bootcamp",
       issuer: "CareerLeap Academy",
       date: "March 15, 2025",
-      image: "/placeholder.svg"
+      image: "web-development.jpeg"
     },
     {
       id: 2,
       title: "Data Science Fundamentals",
       issuer: "CareerLeap Academy",
       date: "February 3, 2025",
-      image: "/placeholder.svg"
+      image: "data-science.jpg"
     },
     {
       id: 3,
       title: "UX/UI Design Principles",
       issuer: "DesignLab",
       date: "December 20, 2024",
-      image: "/placeholder.svg"
+      image: "ux-designer.jpg"
     }
   ];
   
@@ -85,7 +85,7 @@ const AchievementShowcase = () => {
     <>
       <Header />
       
-      <div className="bg-gray-50 min-h-screen py-10">
+      <div className="bg-gray-50 min-h-screen py-10 pt-28">
         <div className="container mx-auto px-4">
           {/* Profile Header */}
           <div className="bg-white rounded-lg shadow-md p-6 mb-6">
