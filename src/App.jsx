@@ -18,6 +18,10 @@ import CompanyProfiles from "./pages/CompanyProfiles";
 import AchievementShowcase from "./pages/AchievementShowcase";
 import NotFound from "./pages/NotFound";
 
+// Interview Components
+import RibbonInterviewSimulator from "./components/RibbonInterviewSimulator";
+import InterviewResults from "./components/InterviewResults";
+
 // Components
 import ProtectedRoute from './components/ProtectedRoute';
 import Chatbot from './components/Chatbot';
@@ -74,14 +78,9 @@ const App = () => (
               </ProtectedRoute>
             }
           />
-          <Route
-            path="/interview-prep"
-            element={
-              <ProtectedRoute>
-                <InterviewPrep />
-              </ProtectedRoute>
-            }
-          />
+          <Route path="/interview-prep" element={<ProtectedRoute><InterviewPrep /></ProtectedRoute>} />
+          <Route path="/interview-prep/simulator" element={<ProtectedRoute><RibbonInterviewSimulator /></ProtectedRoute>} />
+          <Route path="/interview-prep/results/:interviewId" element={<ProtectedRoute><InterviewResults /></ProtectedRoute>} />
           <Route
             path="/achievements"
             element={

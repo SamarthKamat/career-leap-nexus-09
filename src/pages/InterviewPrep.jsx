@@ -64,11 +64,11 @@ const InterviewPrep = () => {
               Practice and master your interview skills with our AI-powered interview simulator
             </p>
             <div className="flex flex-wrap justify-center gap-4">
-              <Link to="#practice" className="btn btn-secondary px-8 py-3">
-                Start Practicing
+              <Link to="/interview-prep/simulator" className="btn btn-secondary px-8 py-3">
+                Start AI Interview
               </Link>
-              <Link to="#schedule" className="btn btn-outline border-white text-white hover:bg-white hover:text-primary px-8 py-3">
-                Schedule Mock Interview
+              <Link to="#practice" className="btn btn-outline border-white text-white hover:bg-white hover:text-primary px-8 py-3">
+                Practice Interviews
               </Link>
             </div>
           </div>
@@ -87,8 +87,11 @@ const InterviewPrep = () => {
               </div>
               <h3 className="text-xl font-semibold mb-3">AI Interview Simulator</h3>
               <p className="text-gray-600">
-                Practice with our AI interviewer that adapts questions based on your responses
+                Practice with our AI interviewer powered by Ribbon API with video recording and real-time feedback
               </p>
+              <Link to="/interview-prep/simulator" className="mt-4 inline-block text-primary hover:underline">
+                Try AI Interview →
+              </Link>
             </div>
             
             <div className="text-center p-6">
