@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Upload, FileText, CheckCircle, AlertCircle, RefreshCw } from 'lucide-react';
+import { parseResume } from '../lib/aiTools';
 
 const ResumeScanner = () => {
   const [file, setFile] = useState(null);
@@ -40,11 +41,20 @@ const ResumeScanner = () => {
     ]
   };
 
-  const handleFileChange = (e) => {
+  const handleFileChange = async (e) => {
     const selectedFile = e.target.files[0];
     if (selectedFile && selectedFile.type === 'application/pdf') {
       setFile(selectedFile);
-      simulateScan();
+      setScanning(true);
+      setResults(null);
+      try {
+        const parsedData = await parseResume(selectedFile);
+        setResults(parsedData);
+      } catch (error) {
+        console.error('Error parsing resume:', error);
+      } finally {
+        setScanning(false);
+      }
     }
   };
 

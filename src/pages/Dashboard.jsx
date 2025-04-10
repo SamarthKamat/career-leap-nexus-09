@@ -1,9 +1,11 @@
-
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
-import Header from '../components/Authheader';
+import Header from '../components/Header';
 import Footer from '../components/Footer';
+import { getApplicationsByUserId } from '../firebase/applicationsCollection';
+import { getActiveJobs } from '../firebase/jobsCollection';
+import { getInterviewsByCandidateId } from '../firebase/interviewsCollection';
 import { 
   Briefcase, 
   FileText, 
@@ -18,168 +20,84 @@ import {
 
 const Dashboard = () => {
   const { currentUser } = useAuth();
-  
-  // Sample dashboard data
-  const upcomingEvents = [
-    {
-      id: 1,
-      title: "Mock Interview Session",
-      date: "April 15, 2025",
-      time: "10:00 AM - 11:00 AM",
-      type: "interview"
-    },
-    {
-      id: 2,
-      title: "Resume Review Workshop",
-      date: "April 17, 2025",
-      time: "2:00 PM - 4:00 PM",
-      type: "workshop"
-    },
-    {
-      id: 3,
-      title: "TechNova Campus Drive",
-      date: "April 22, 2025",
-      time: "9:00 AM - 5:00 PM",
-      type: "recruitment"
-    }
-  ];
-  
+  const [applications, setApplications] = useState([]);
+  const [recentJobs, setRecentJobs] = useState([]);
+  const [upcomingInterviews, setUpcomingInterviews] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchDashboardData = async () => {
+      try {
+        if (currentUser) {
+          const userApplications = await getApplicationsByUserId(currentUser.uid);
+          setApplications(userApplications);
+
+          const activeJobs = await getActiveJobs();
+          setRecentJobs(activeJobs.slice(0, 3));
+
+          const interviews = await getInterviewsByCandidateId(currentUser.uid);
+          const upcoming = interviews
+            .filter(interview => interview.status === 'scheduled')
+            .sort((a, b) => a.scheduledTime.seconds - b.scheduledTime.seconds)
+            .slice(0, 3)
+            .map(interview => ({
+              id: interview.id,
+              title: `Interview for ${interview.jobTitle}`,
+              date: new Date(interview.scheduledTime.seconds * 1000).toLocaleDateString(),
+              time: new Date(interview.scheduledTime.seconds * 1000).toLocaleTimeString(),
+              type: interview.type
+            }));
+
+          setUpcomingInterviews(upcoming);
+        }
+      } catch (error) {
+        console.error('Error fetching dashboard data:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchDashboardData();
+  }, [currentUser]);
+
   const applicationStats = {
-    applied: 12,
-    inProgress: 5,
-    interviews: 3,
-    offers: 1
+    applied: applications.length,
+    inProgress: applications.filter(app => app.status === 'new' || app.status === 'reviewed').length,
+    interviews: applications.filter(app => app.status === 'interview').length,
+    offers: applications.filter(app => app.status === 'offered').length
   };
-  
-  const recentJobs = [
-    {
-      id: 101,
-      title: "Frontend Developer",
-      company: "TechNova Solutions",
-      location: "San Francisco, CA",
-      posted: "2 days ago"
-    },
-    {
-      id: 102,
-      title: "Data Analyst",
-      company: "FinServe Global",
-      location: "New York, NY",
-      posted: "3 days ago"
-    },
-    {
-      id: 103,
-      title: "UX/UI Designer",
-      company: "CreativeWorks Media",
-      location: "Los Angeles, CA",
-      posted: "5 days ago"
-    }
-  ];
 
   return (
     <>
       <Header />
-      
-      <div className="bg-gray-50 min-h-screen pt-24 pb-10">
+
+      <div className="bg-gray-50 min-h-screen py-10">
         <div className="container mx-auto px-4">
           {/* Welcome Header */}
           <div className="bg-white rounded-lg shadow-md p-6 mb-6">
             <div className="flex flex-col md:flex-row md:items-center justify-between">
               <div>
                 <h1 className="text-2xl md:text-3xl font-bold">Welcome, {currentUser?.displayName || 'Student'}</h1>
-                <p className="text-gray-600 mt-1">
-                  Your placement journey dashboard
-                </p>
+                <p className="text-gray-600 mt-1">Your placement journey dashboard</p>
               </div>
               <div className="mt-4 md:mt-0">
-                <Link to="/profile" className="btn btn-primary">
-                  View Profile
-                </Link>
+                <Link to="/profile" className="btn btn-primary">View Profile</Link>
               </div>
             </div>
           </div>
-          
+
           {/* Quick Links */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
-            <Link 
-              to="/jobs" 
-              className="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow flex items-center"
-            >
-              <div className="p-3 rounded-full bg-primary-100 mr-4">
-                <Briefcase className="h-6 w-6 text-primary-600" />
-              </div>
-              <div>
-                <h2 className="font-semibold text-lg">Job Listings</h2>
-                <p className="text-gray-600 text-sm">Browse open positions</p>
-              </div>
-            </Link>
-            
-            <Link 
-              to="/resume-builder" 
-              className="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow flex items-center"
-            >
-              <div className="p-3 rounded-full bg-secondary-100 mr-4">
-                <FileText className="h-6 w-6 text-secondary-600" />
-              </div>
-              <div>
-                <h2 className="font-semibold text-lg">Resume Builder</h2>
-                <p className="text-gray-600 text-sm">Update your resume</p>
-              </div>
-            </Link>
-            
-            <Link 
-              to="/interview-prep" 
-              className="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow flex items-center"
-            >
-              <div className="p-3 rounded-full bg-accent-100 mr-4">
-                <Video className="h-6 w-6 text-accent-600" />
-              </div>
-              <div>
-                <h2 className="font-semibold text-lg">Interview Prep</h2>
-                <p className="text-gray-600 text-sm">Practice interviews</p>
-              </div>
-            </Link>
-            
-            <Link 
-              to="/achievements" 
-              className="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow flex items-center"
-            >
-              <div className="p-3 rounded-full bg-primary-100 mr-4">
-                <Award className="h-6 w-6 text-primary-600" />
-              </div>
-              <div>
-                <h2 className="font-semibold text-lg">Achievements</h2>
-                <p className="text-gray-600 text-sm">View your progress</p>
-              </div>
-            </Link>
+            <DashboardCard to="/jobs" icon={<Briefcase />} title="Job Listings" subtitle="Browse open positions" />
+            <DashboardCard to="/resume-builder" icon={<FileText />} title="Resume Builder" subtitle="Update your resume" />
+            <DashboardCard to="/interview-prep" icon={<Video />} title="Interview Prep" subtitle="Practice interviews" />
+            <DashboardCard to="/achievements" icon={<Award />} title="Achievements" subtitle="View your progress" />
           </div>
-          
+
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             {/* Application Stats */}
-            <div className="bg-white rounded-lg shadow-md p-6">
-              <h2 className="text-xl font-semibold mb-4 flex items-center">
-                <Briefcase className="h-5 w-5 mr-2" />
-                Application Stats
-              </h2>
-              <div className="grid grid-cols-2 gap-4">
-                <div className="border rounded-md p-4 text-center">
-                  <p className="text-3xl font-bold text-primary-600">{applicationStats.applied}</p>
-                  <p className="text-gray-600">Applied</p>
-                </div>
-                <div className="border rounded-md p-4 text-center">
-                  <p className="text-3xl font-bold text-secondary-600">{applicationStats.inProgress}</p>
-                  <p className="text-gray-600">In Progress</p>
-                </div>
-                <div className="border rounded-md p-4 text-center">
-                  <p className="text-3xl font-bold text-accent-600">{applicationStats.interviews}</p>
-                  <p className="text-gray-600">Interviews</p>
-                </div>
-                <div className="border rounded-md p-4 text-center">
-                  <p className="text-3xl font-bold text-green-600">{applicationStats.offers}</p>
-                  <p className="text-gray-600">Offers</p>
-                </div>
-              </div>
-            </div>
-            
+            <StatsCard stats={applicationStats} />
+
             {/* Upcoming Events */}
             <div className="bg-white rounded-lg shadow-md p-6">
               <div className="flex justify-between items-center mb-4">
@@ -192,22 +110,28 @@ const Dashboard = () => {
                 </Link>
               </div>
               <div className="space-y-4">
-                {upcomingEvents.map(event => (
-                  <div key={event.id} className="border-l-4 border-primary pl-4 py-2">
-                    <h3 className="font-semibold">{event.title}</h3>
-                    <div className="flex items-center text-sm text-gray-600">
-                      <Calendar className="h-4 w-4 mr-1" />
-                      <span>{event.date}</span>
+                {loading ? (
+                  <div className="text-center py-4 text-gray-500">Loading...</div>
+                ) : upcomingInterviews.length > 0 ? (
+                  upcomingInterviews.map(event => (
+                    <div key={event.id} className="border-l-4 border-primary pl-4 py-2">
+                      <h3 className="font-semibold">{event.title}</h3>
+                      <div className="flex items-center text-sm text-gray-600">
+                        <Calendar className="h-4 w-4 mr-1" />
+                        <span>{event.date}</span>
+                      </div>
+                      <div className="flex items-center text-sm text-gray-600">
+                        <Clock className="h-4 w-4 mr-1" />
+                        <span>{event.time}</span>
+                      </div>
                     </div>
-                    <div className="flex items-center text-sm text-gray-600">
-                      <Clock className="h-4 w-4 mr-1" />
-                      <span>{event.time}</span>
-                    </div>
-                  </div>
-                ))}
+                  ))
+                ) : (
+                  <div className="text-center py-4 text-gray-500">No upcoming events</div>
+                )}
               </div>
             </div>
-            
+
             {/* Recent Jobs */}
             <div className="bg-white rounded-lg shadow-md p-6">
               <div className="flex justify-between items-center mb-4">
@@ -220,130 +144,146 @@ const Dashboard = () => {
                 </Link>
               </div>
               <div className="space-y-4">
-                {recentJobs.map(job => (
-                  <Link key={job.id} to={`/jobs/${job.id}`} className="block border rounded-md p-4 hover:bg-gray-50">
-                    <div className="flex justify-between">
-                      <h3 className="font-semibold">{job.title}</h3>
-                      <span className="text-sm text-gray-500">{job.posted}</span>
-                    </div>
-                    <p className="text-gray-600">{job.company}</p>
-                    <p className="text-gray-500 text-sm">{job.location}</p>
-                  </Link>
-                ))}
+                {loading ? (
+                  <div className="text-center py-4 text-gray-500">Loading...</div>
+                ) : recentJobs.length > 0 ? (
+                  recentJobs.map(job => (
+                    <Link key={job.id} to={`/jobs/${job.id}`} className="block border rounded-md p-4 hover:bg-gray-50">
+                      <div className="flex justify-between">
+                        <h3 className="font-semibold">{job.title}</h3>
+                        <span className="text-sm text-gray-500">
+                          {new Date(job.createdAt.seconds * 1000).toLocaleDateString()}
+                        </span>
+                      </div>
+                      <p className="text-gray-600">{job.company}</p>
+                      <p className="text-gray-500 text-sm">{job.location}</p>
+                    </Link>
+                  ))
+                ) : (
+                  <div className="text-center py-4 text-gray-500">No jobs available</div>
+                )}
               </div>
             </div>
           </div>
-          
+
           {/* Training Progress */}
-          <div className="bg-white rounded-lg shadow-md p-6 mt-6">
-            <div className="flex justify-between items-center mb-4">
-              <h2 className="text-xl font-semibold flex items-center">
-                <BookOpen className="h-5 w-5 mr-2" />
-                Your Training Progress
-              </h2>
-              <Link to="/training" className="text-primary-600 hover:text-primary-700 text-sm font-medium flex items-center">
-                View All Courses <ChevronRight className="h-4 w-4" />
-              </Link>
-            </div>
-            
-            <div className="space-y-4">
-              <div className="border rounded-md p-4">
-                <div className="flex justify-between items-center mb-2">
-                  <h3 className="font-semibold">Web Development Bootcamp</h3>
-                  <span className="text-primary-600 font-medium">75% Complete</span>
-                </div>
-                <div className="w-full bg-gray-200 rounded-full h-2.5">
-                  <div className="bg-primary h-2.5 rounded-full" style={{ width: '75%' }}></div>
-                </div>
-                <div className="mt-3 flex justify-between text-sm text-gray-600">
-                  <span>Modules completed: 6/8</span>
-                  <span>Last accessed: Yesterday</span>
-                </div>
-              </div>
-              
-              <div className="border rounded-md p-4">
-                <div className="flex justify-between items-center mb-2">
-                  <h3 className="font-semibold">Data Science Fundamentals</h3>
-                  <span className="text-primary-600 font-medium">40% Complete</span>
-                </div>
-                <div className="w-full bg-gray-200 rounded-full h-2.5">
-                  <div className="bg-primary h-2.5 rounded-full" style={{ width: '40%' }}></div>
-                </div>
-                <div className="mt-3 flex justify-between text-sm text-gray-600">
-                  <span>Modules completed: 4/10</span>
-                  <span>Last accessed: 3 days ago</span>
-                </div>
-              </div>
-              
-              <div className="border rounded-md p-4">
-                <div className="flex justify-between items-center mb-2">
-                  <h3 className="font-semibold">Technical Interview Preparation</h3>
-                  <span className="text-primary-600 font-medium">90% Complete</span>
-                </div>
-                <div className="w-full bg-gray-200 rounded-full h-2.5">
-                  <div className="bg-primary h-2.5 rounded-full" style={{ width: '90%' }}></div>
-                </div>
-                <div className="mt-3 flex justify-between text-sm text-gray-600">
-                  <span>Modules completed: 9/10</span>
-                  <span>Last accessed: Today</span>
-                </div>
-              </div>
-            </div>
-          </div>
-          
+          <TrainingProgress />
+
           {/* Notifications */}
-          <div className="bg-white rounded-lg shadow-md p-6 mt-6">
-            <div className="flex justify-between items-center mb-4">
-              <h2 className="text-xl font-semibold flex items-center">
-                <Bell className="h-5 w-5 mr-2" />
-                Recent Notifications
-              </h2>
-              <Link to="/notifications" className="text-primary-600 hover:text-primary-700 text-sm font-medium">
-                View All
-              </Link>
-            </div>
-            
-            <div className="space-y-4">
-              <div className="flex items-start p-3 border-l-4 border-primary-500 bg-gray-50">
-                <div className="bg-primary-100 p-2 rounded-full mr-3">
-                  <Briefcase className="h-5 w-5 text-primary-600" />
-                </div>
-                <div>
-                  <p className="font-medium">Application Update</p>
-                  <p className="text-gray-600 text-sm">Your application for Frontend Developer at TechNova has been moved to the interview stage.</p>
-                  <p className="text-gray-500 text-xs mt-1">1 hour ago</p>
-                </div>
-              </div>
-              
-              <div className="flex items-start p-3 border-l-4 border-secondary-500 bg-gray-50">
-                <div className="bg-secondary-100 p-2 rounded-full mr-3">
-                  <Calendar className="h-5 w-5 text-secondary-600" />
-                </div>
-                <div>
-                  <p className="font-medium">Event Reminder</p>
-                  <p className="text-gray-600 text-sm">Mock Interview Session starts in 2 hours. Don't forget to prepare!</p>
-                  <p className="text-gray-500 text-xs mt-1">2 hours ago</p>
-                </div>
-              </div>
-              
-              <div className="flex items-start p-3 border-l-4 border-accent-500 bg-gray-50">
-                <div className="bg-accent-100 p-2 rounded-full mr-3">
-                  <BookOpen className="h-5 w-5 text-accent-600" />
-                </div>
-                <div>
-                  <p className="font-medium">Course Update</p>
-                  <p className="text-gray-600 text-sm">New module added to your Web Development Bootcamp: "Advanced React Patterns"</p>
-                  <p className="text-gray-500 text-xs mt-1">1 day ago</p>
-                </div>
-              </div>
-            </div>
-          </div>
+          <Notifications />
         </div>
       </div>
-      
+
       <Footer />
     </>
   );
 };
+
+// 🧩 Reusable Subcomponents
+
+const DashboardCard = ({ to, icon, title, subtitle }) => (
+  <Link to={to} className="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow flex items-center">
+    <div className="p-3 rounded-full bg-gray-100 mr-4">{icon}</div>
+    <div>
+      <h2 className="font-semibold text-lg">{title}</h2>
+      <p className="text-gray-600 text-sm">{subtitle}</p>
+    </div>
+  </Link>
+);
+
+const StatsCard = ({ stats }) => (
+  <div className="bg-white rounded-lg shadow-md p-6">
+    <h2 className="text-xl font-semibold mb-4 flex items-center">
+      <Briefcase className="h-5 w-5 mr-2" />
+      Application Stats
+    </h2>
+    <div className="grid grid-cols-2 gap-4">
+      {Object.entries(stats).map(([key, value]) => (
+        <div key={key} className="border rounded-md p-4 text-center">
+          <p className="text-3xl font-bold text-primary-600">{value}</p>
+          <p className="text-gray-600 capitalize">{key}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+);
+
+const TrainingProgress = () => (
+  <div className="bg-white rounded-lg shadow-md p-6 mt-6">
+    <div className="flex justify-between items-center mb-4">
+      <h2 className="text-xl font-semibold flex items-center">
+        <BookOpen className="h-5 w-5 mr-2" />
+        Your Training Progress
+      </h2>
+      <Link to="/training" className="text-primary-600 hover:text-primary-700 text-sm font-medium flex items-center">
+        View All Courses <ChevronRight className="h-4 w-4 ml-1" />
+      </Link>
+    </div>
+
+    <ProgressBar title="Web Development Bootcamp" percent={75} modules="6/8" lastAccessed="Yesterday" />
+    <ProgressBar title="Data Science Fundamentals" percent={40} modules="4/10" lastAccessed="3 days ago" />
+    <ProgressBar title="Technical Interview Preparation" percent={90} modules="9/10" lastAccessed="Today" />
+  </div>
+);
+
+const ProgressBar = ({ title, percent, modules, lastAccessed }) => (
+  <div className="border rounded-md p-4 mb-4">
+    <div className="flex justify-between items-center mb-2">
+      <h3 className="font-semibold">{title}</h3>
+      <span className="text-primary-600 font-medium">{percent}% Complete</span>
+    </div>
+    <div className="w-full bg-gray-200 rounded-full h-2.5">
+      <div className="bg-primary h-2.5 rounded-full" style={{ width: `${percent}%` }}></div>
+    </div>
+    <div className="mt-3 flex justify-between text-sm text-gray-600">
+      <span>Modules completed: {modules}</span>
+      <span>Last accessed: {lastAccessed}</span>
+    </div>
+  </div>
+);
+
+const Notifications = () => (
+  <div className="bg-white rounded-lg shadow-md p-6 mt-6">
+    <div className="flex justify-between items-center mb-4">
+      <h2 className="text-xl font-semibold flex items-center">
+        <Bell className="h-5 w-5 mr-2" />
+        Recent Notifications
+      </h2>
+      <Link to="/notifications" className="text-primary-600 hover:text-primary-700 text-sm font-medium">
+        View All
+      </Link>
+    </div>
+
+    <Notification
+      icon={<Briefcase className="h-5 w-5 text-primary-600" />}
+      title="Application Update"
+      message="Your application for Frontend Developer at TechNova has been moved to the interview stage."
+      time="1 hour ago"
+    />
+    <Notification
+      icon={<Calendar className="h-5 w-5 text-secondary-600" />}
+      title="Event Reminder"
+      message="Mock Interview Session starts in 2 hours. Don't forget to prepare!"
+      time="2 hours ago"
+    />
+    <Notification
+      icon={<BookOpen className="h-5 w-5 text-accent-600" />}
+      title="Course Update"
+      message='New module added to your Web Development Bootcamp: "Advanced React Patterns"'
+      time="1 day ago"
+    />
+  </div>
+);
+
+const Notification = ({ icon, title, message, time }) => (
+  <div className="flex items-start p-3 border-l-4 border-primary-500 bg-gray-50 mb-2">
+    <div className="bg-primary-100 p-2 rounded-full mr-3">{icon}</div>
+    <div>
+      <p className="font-medium">{title}</p>
+      <p className="text-gray-600 text-sm">{message}</p>
+      <p className="text-gray-500 text-xs mt-1">{time}</p>
+    </div>
+  </div>
+);
 
 export default Dashboard;

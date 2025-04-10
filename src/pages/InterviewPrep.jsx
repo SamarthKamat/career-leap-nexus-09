@@ -1,8 +1,10 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
+import DomainSelector from '../components/interview/DomainSelector';
+import InterviewChat from '../components/interview/InterviewChat';
 import { 
   Video, 
   Monitor, 
@@ -13,43 +15,15 @@ import {
   ArrowRight,
   Calendar
 } from 'lucide-react';
+import { useAuth } from '../contexts/AuthContext';
 
 const InterviewPrep = () => {
-  // Sample practice interviews
-  const practiceInterviews = [
-    {
-      id: 1,
-      title: "Technical Interview - Frontend Development",
-      description: "Practice common frontend development interview questions and coding challenges",
-      duration: "45 minutes",
-      difficulty: "Intermediate",
-      topics: ["JavaScript", "React", "CSS", "Web Performance"]
-    },
-    {
-      id: 2,
-      title: "Backend Developer Interview",
-      description: "Practice system design, database optimization, and server-side programming questions",
-      duration: "60 minutes",
-      difficulty: "Advanced",
-      topics: ["System Design", "Databases", "APIs", "Node.js"]
-    },
-    {
-      id: 3,
-      title: "Data Science Interview",
-      description: "Practice statistical analysis, machine learning, and data visualization questions",
-      duration: "50 minutes",
-      difficulty: "Intermediate",
-      topics: ["Statistics", "Machine Learning", "Python", "Data Visualization"]
-    },
-    {
-      id: 4,
-      title: "HR Behavioral Interview",
-      description: "Practice answering common behavioral questions using the STAR method",
-      duration: "30 minutes",
-      difficulty: "Beginner",
-      topics: ["Leadership", "Teamwork", "Conflict Resolution", "Problem Solving"]
-    }
-  ];
+  const { currentUser } = useAuth();
+  const [selectedOptions, setSelectedOptions] = useState(null);
+
+  const handleDomainSelect = (options) => {
+    setSelectedOptions(options);
+  };
 
   return (
     <>
@@ -64,11 +38,11 @@ const InterviewPrep = () => {
               Practice and master your interview skills with our AI-powered interview simulator
             </p>
             <div className="flex flex-wrap justify-center gap-4">
-              <Link to="#practice" className="btn btn-secondary px-8 py-3">
-                Start Practicing
+              <Link to="/interview-prep/simulator" className="btn btn-secondary px-8 py-3">
+                Start AI Interview
               </Link>
-              <Link to="#schedule" className="btn btn-outline border-white text-white hover:bg-white hover:text-primary px-8 py-3">
-                Schedule Mock Interview
+              <Link to="#practice" className="btn btn-outline border-white text-white hover:bg-white hover:text-primary px-8 py-3">
+                Practice Interviews
               </Link>
             </div>
           </div>
@@ -87,8 +61,11 @@ const InterviewPrep = () => {
               </div>
               <h3 className="text-xl font-semibold mb-3">AI Interview Simulator</h3>
               <p className="text-gray-600">
-                Practice with our AI interviewer that adapts questions based on your responses
+                Practice with our AI interviewer powered by Ribbon API with video recording and real-time feedback
               </p>
+              <Link to="/interview-prep/simulator" className="mt-4 inline-block text-primary hover:underline">
+                Try AI Interview →
+              </Link>
             </div>
             
             <div className="text-center p-6">
@@ -127,52 +104,27 @@ const InterviewPrep = () => {
       {/* Practice Interview Section */}
       <section id="practice" className="py-16 bg-gray-50">
         <div className="container mx-auto px-4">
-          <h2 className="text-3xl font-bold text-center mb-12">Practice Interviews</h2>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8">
-            {practiceInterviews.map(interview => (
-              <div key={interview.id} className="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow">
-                <div className="p-6">
-                  <h3 className="text-xl font-semibold mb-3">{interview.title}</h3>
-                  <p className="text-gray-600 mb-4">{interview.description}</p>
-                  
-                  <div className="flex flex-wrap gap-2 mb-4">
-                    {interview.topics.map((topic, index) => (
-                      <span key={index} className="bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-sm">
-                        {topic}
-                      </span>
-                    ))}
-                  </div>
-                  
-                  <div className="flex justify-between text-gray-600 mb-6">
-                    <div className="flex items-center">
-                      <Video className="h-5 w-5 mr-2" />
-                      <span>{interview.duration}</span>
-                    </div>
-                    <div>
-                      <span className={`px-3 py-1 rounded-full text-sm ${
-                        interview.difficulty === "Beginner" ? "bg-green-100 text-green-700" :
-                        interview.difficulty === "Intermediate" ? "bg-yellow-100 text-yellow-700" :
-                        "bg-red-100 text-red-700"
-                      }`}>
-                        {interview.difficulty}
-                      </span>
-                    </div>
-                  </div>
-                  
-                  <Link to={`/interview-prep/${interview.id}`} className="btn btn-primary w-full">
-                    Start Interview
-                  </Link>
-                </div>
+          {!currentUser ? (
+            <div className="text-center">
+              <h2 className="text-3xl font-bold mb-6">Sign in to Start Practicing</h2>
+              <p className="text-gray-600 mb-8">Create an account or sign in to access the interview practice feature.</p>
+              <div className="flex justify-center gap-4">
+                <Link to="/login" className="btn btn-primary">Login</Link>
+                <Link to="/register" className="btn btn-outline">Sign Up</Link>
               </div>
-            ))}
-          </div>
-          
-          <div className="text-center mt-10">
-            <Link to="/interview-prep/all" className="btn btn-outline flex items-center mx-auto">
-              View All Practice Interviews <ArrowRight size={16} className="ml-2" />
-            </Link>
-          </div>
+            </div>
+          ) : selectedOptions ? (
+            <div className="max-w-4xl mx-auto">
+              <InterviewChat
+                domain={selectedOptions.domain}
+                difficulty={selectedOptions.difficulty}
+              />
+            </div>
+          ) : (
+            <div className="max-w-4xl mx-auto">
+              <DomainSelector onSelect={handleDomainSelect} />
+            </div>
+          )}
         </div>
       </section>
       

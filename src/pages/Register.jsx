@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
@@ -19,7 +18,7 @@ const Register = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [acceptTerms, setAcceptTerms] = useState(false);
   
-  const { signup, updateUserProfile, currentUser } = useAuth();
+  const { signup, updateUserProfile, currentUser, signInWithGoogle, signInWithGitHub } = useAuth();
   const navigate = useNavigate();
   
   // Password validation states
@@ -32,13 +31,6 @@ const Register = () => {
     match: false
   });
 
-  // If user is already logged in, redirect to dashboard
-  useEffect(() => {
-    if (currentUser) {
-      navigate('/dashboard');
-    }
-  }, [currentUser, navigate]);
-
   // Update password validations whenever password or confirmPassword changes
   useEffect(() => {
     setValidations({
@@ -50,6 +42,13 @@ const Register = () => {
       match: password === confirmPassword && password !== ''
     });
   }, [password, confirmPassword]);
+
+  // If user is already logged in, redirect to dashboard
+  useEffect(() => {
+    if (currentUser) {
+      navigate('/dashboard');
+    }
+  }, [currentUser, navigate]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -78,14 +77,37 @@ const Register = () => {
     
     try {
       setIsLoading(true);
-      const userCredential = await signup(email, password);
+      // Create the user account with additional data including userType
+      const userCredential = await signup(email, password, {
+        displayName: fullName,
+        userType: userType,
+        createdAt: new Date().toISOString(),
+        lastLogin: new Date().toISOString()
+      });
       
+      // Update the user profile with display name
       await updateUserProfile(userCredential.user, {
         displayName: fullName
       });
       
+      // Store additional user info in Firestore
+      const { db } = await import('../firebase/config');
+      const { doc, setDoc } = await import('firebase/firestore');
+      
+      await setDoc(doc(db, "users", userCredential.user.uid), {
+        fullName,
+        email,
+        userType,
+        createdAt: new Date()
+      })
+      
       toast.success('Account created successfully!');
-      navigate('/dashboard');
+      // Navigate to the appropriate dashboard based on user type
+      if (userType === 'employer') {
+        navigate('/employer-dashboard');
+      } else {
+        navigate('/dashboard');
+      }
     } catch (error) {
       console.error('Registration error:', error);
       let errorMessage = 'Failed to create an account';
@@ -292,12 +314,12 @@ const Register = () => {
             </div>
             
             {/* Password Requirements - Enhanced */}
-            <motion.div 
+            <motion.div
               className="space-y-3 mt-4 bg-gray-50 p-4 rounded-lg border border-gray-200"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.2 }}
-            >
+            / >
               <h4 className="text-sm font-bold text-gray-800">Password Requirements:</h4>
               <div className="grid grid-cols-2 gap-2">
                 {Object.entries(validations).map(([key, isValid]) => (
@@ -323,35 +345,34 @@ const Register = () => {
                   </motion.div>
                 ))}
               </div>
-            </motion.div>
-          </div>
+            </div>
 
-          {/* Terms and Conditions */}
-          <div className="flex items-start">
-            <div className="flex items-center h-5">
-              <input
-                id="terms"
-                name="terms"
-                type="checkbox"
-                checked={acceptTerms}
-                onChange={(e) => setAcceptTerms(e.target.checked)}
-                className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded transition-colors duration-200"
-                required
-              />
+            {/* Terms and Conditions */}
+            <div className="flex items-start">
+              <div className="flex items-center h-5">
+                <input
+                  id="terms"
+                  name="terms"
+                  type="checkbox"
+                  checked={acceptTerms}
+                  onChange={(e) => setAcceptTerms(e.target.checked)}
+                  className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded transition-colors duration-200"
+                  required
+                />
+              </div>
+              <div className="ml-3 text-sm">
+                <label htmlFor="terms" className="text-gray-700">
+                  I agree to the{' '}
+                  <Link to="/terms" className="text-primary-600 hover:text-primary-500 transition-colors duration-200">
+                    Terms and Conditions
+                  </Link>
+                  {' '}and{' '}
+                  <Link to="/privacy" className="text-primary-600 hover:text-primary-500 transition-colors duration-200">
+                    Privacy Policy
+                  </Link>
+                </label>
+              </div>
             </div>
-            <div className="ml-3 text-sm">
-              <label htmlFor="terms" className="text-gray-700">
-                I agree to the{' '}
-                <Link to="/terms" className="text-primary-600 hover:text-primary-500 transition-colors duration-200">
-                  Terms and Conditions
-                </Link>
-                {' '}and{' '}
-                <Link to="/privacy" className="text-primary-600 hover:text-primary-500 transition-colors duration-200">
-                  Privacy Policy
-                </Link>
-              </label>
-            </div>
-          </div>
 
           {/* Register Button */}
           <motion.button
@@ -392,6 +413,8 @@ const Register = () => {
               whileHover={{ scale: 1.03 }}
               whileTap={{ scale: 0.97 }}
               className="flex items-center justify-center px-4 py-3 border border-gray-300 rounded-lg shadow-sm bg-white text-sm font-semibold text-gray-700 hover:bg-gray-50 transition-colors duration-200"
+              onClick={() => signInWithGoogle().then(() => navigate('/dashboard')).catch(error => toast.error('Google sign-in failed'))}
+              disabled={isLoading}
             >
               <svg className="h-5 w-5 mr-2" viewBox="0 0 24 24">
                 <g transform="matrix(1, 0, 0, 1, 27.009001, -39.238998)">
@@ -409,6 +432,8 @@ const Register = () => {
               whileHover={{ scale: 1.03 }}
               whileTap={{ scale: 0.97 }}
               className="flex items-center justify-center px-4 py-3 border border-gray-300 rounded-lg shadow-sm bg-white text-sm font-semibold text-gray-700 hover:bg-gray-50 transition-colors duration-200"
+              onClick={() => signInWithGitHub().then(() => navigate('/dashboard')).catch(error => toast.error('GitHub sign-in failed'))}
+              disabled={isLoading}
             >
               <svg className="h-5 w-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
                 <path fillRule="evenodd" d="M10 0C4.477 0 0 4.484 0 10.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0110 4.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.203 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.942.359.31.678.921.678 1.856 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0020 10.017C20 4.484 15.522 0 10 0z" clipRule="evenodd" />
