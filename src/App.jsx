@@ -25,7 +25,7 @@ import InterviewResults from "./components/InterviewResults";
 
 // Components
 import ProtectedRoute from './components/ProtectedRoute';
-import Chatbot from './components/Chatbot';
+import ContactWidget from './components/ContactWidget';
 
 // Employer Dashboard Pages
 import PostJob from "./pages/employer/PostJob";
@@ -39,8 +39,8 @@ const App = () => (
   <QueryClientProvider client={queryClient}>
     <AuthProvider>
       <BrowserRouter>
-        {/* Global Chatbot */}
-        <Chatbot />
+        {/* Global Contact Widget */}
+        <ContactWidget />
 
         <Routes>
           {/* Public Routes */}
@@ -53,43 +53,107 @@ const App = () => (
           <Route path="/companies" element={<CompanyProfiles />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
-          
-          {/* Protected Routes */}
-          <Route path="/dashboard" element={
-            <ProtectedRoute>
-              <Dashboard />
-            </ProtectedRoute>
-          } />
-          <Route path="/profile" element={
-            <ProtectedRoute>
-              <Profile />
-            </ProtectedRoute>
-          } />
-          <Route path="/resume-builder" element={
-            <ProtectedRoute>
-              <ResumeBuilder />
-            </ProtectedRoute>
-          } />
-          <Route path="/interview-prep" element={
-            <ProtectedRoute>
-              <InterviewPrep />
-            </ProtectedRoute>
-          } />
-          <Route path="/chat" element={
-            <ProtectedRoute>
-              <div className="App">
-                <h1>Website Chatbot</h1>
-                <Chatbot />
-              </div>
-            </ProtectedRoute>
-          } />
-          <Route path="/achievements" element={
-            <ProtectedRoute>
-              <AchievementShowcase />
-            </ProtectedRoute>
-          } />
 
-          
+          {/* Protected User Routes */}
+          <Route
+            path="/dashboard"
+            element={
+              <ProtectedRoute>
+                <Dashboard />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/profile"
+            element={
+              <ProtectedRoute>
+                <Profile />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/resume-builder"
+            element={
+              <ProtectedRoute>
+                <ResumeBuilder />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/interview-prep"
+            element={
+              <ProtectedRoute>
+                <InterviewPrep />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/achievements"
+            element={
+              <ProtectedRoute>
+                <AchievementShowcase />
+              </ProtectedRoute>
+            }
+          />
+
+          {/* Protected Employer Dashboard Routes */}
+          <Route
+            path="/employer-dashboard"
+            element={
+              <ProtectedRoute>
+                <EmployerDashboard />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/employer-dashboard/post-job"
+            element={
+              <ProtectedRoute>
+                <PostJob />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/employer-dashboard/manage-jobs"
+            element={
+              <ProtectedRoute>
+                <ManageJobs />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/employer-dashboard/candidates"
+            element={
+              <ProtectedRoute>
+                <Candidates />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/employer-dashboard/interviews"
+            element={
+              <ProtectedRoute>
+                <Interviews />
+              </ProtectedRoute>
+            }
+          />
+
+          {/* Optional: Dedicated Chat Route */}
+          {/* If you want a dedicated chatbot page, uncomment this block */}
+          {/*
+          <Route
+            path="/chat"
+            element={
+              <ProtectedRoute>
+                <div className="App">
+                  <h1>Website Chatbot</h1>
+                  <Chatbot />
+                </div>
+              </ProtectedRoute>
+            }
+          />
+          */}
+
           {/* 404 Page */}
           <Route path="*" element={<NotFound />} />
         </Routes>
