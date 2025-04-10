@@ -30,7 +30,7 @@ class ErrorBoundary extends React.Component {
                   <h3 className="text-sm font-medium text-red-800">Something went wrong</h3>
                   <div className="mt-2 text-sm text-red-700">
                     <p>We're sorry! An error occurred while rendering this component.</p>
-                    {process.env.NODE_ENV === 'development' && (
+                    {process.NODE_ENV === 'development' && (
                       <details className="mt-3 text-left">
                         <summary className="font-medium">Error details</summary>
                         <pre className="mt-2 text-xs whitespace-pre-wrap">
