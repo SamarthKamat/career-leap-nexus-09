@@ -3,6 +3,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { Menu, X, ChevronDown, User, LogOut, FileText } from 'lucide-react';
+import ChatBot from './chatbot/ChatBot';
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -83,6 +84,7 @@ const Header = () => {
                 </div>
               </div>
             </div>
+            <ChatBot />
           </nav>
 
           {/* Auth Buttons */}
