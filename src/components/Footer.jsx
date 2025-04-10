@@ -12,8 +12,8 @@ const Footer = () => {
           <div className="space-y-4">
             <Link to="/" className="inline-block">
               <div className="text-2xl font-bold">
-                <span className="text-primary-400">Career</span>
-                <span className="text-secondary-400">Leap</span>
+                <span className="text-primary-400">Job</span>
+                <span className="text-secondary-400">GPT</span>
               </div>
             </Link>
             <p className="text-gray-400">
@@ -85,15 +85,15 @@ const Footer = () => {
             <ul className="space-y-4">
               <li className="flex">
                 <MapPin className="mr-2 text-primary-400 flex-shrink-0" size={20} />
-                <span className="text-gray-400">123 Campus Drive, University Area, Tech City</span>
+                <span className="text-gray-400">Patto-Plaza, Panjim, Goa-403510</span>
               </li>
               <li className="flex">
                 <Phone className="mr-2 text-primary-400 flex-shrink-0" size={20} />
-                <span className="text-gray-400">+1 (123) 456-7890</span>
+                <span className="text-gray-400">0832 3245678</span>
               </li>
               <li className="flex">
                 <Mail className="mr-2 text-primary-400 flex-shrink-0" size={20} />
-                <span className="text-gray-400">contact@careerleap.edu</span>
+                <span className="text-gray-400">contact@jobgpt.edu</span>
               </li>
             </ul>
           </div>
@@ -102,7 +102,7 @@ const Footer = () => {
         <div className="border-t border-gray-800 mt-12 pt-8">
           <div className="flex flex-col md:flex-row justify-between items-center">
             <p className="text-gray-400 text-sm">
-              © {new Date().getFullYear()} CareerLeap. All rights reserved.
+              © {new Date().getFullYear()} JobGPT. All rights reserved.
             </p>
             <div className="flex space-x-4 mt-4 md:mt-0">
               <a href="#" className="text-gray-400 hover:text-white text-sm">Privacy Policy</a>

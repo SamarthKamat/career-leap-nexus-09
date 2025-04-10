@@ -69,5 +69,7 @@ try {
   toast.error('Failed to initialize Firebase. Please refresh the page.');
 }
 
-export { auth, db, storage };
+export { auth, db, storage, googleProvider, githubProvider };
 export default app;
+
+

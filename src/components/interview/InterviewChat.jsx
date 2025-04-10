@@ -4,6 +4,7 @@ import { db } from '../../firebase/config';
 import { collection, addDoc, query, where, orderBy, getDocs } from 'firebase/firestore';
 import { getFunctions, httpsCallable } from 'firebase/functions';
 import { MessageSquare, Send, User, Bot } from 'lucide-react';
+import { sentimentAnalysis } from '../../lib/aiTools';
 
 const InterviewChat = ({ domain, difficulty }) => {
   const { currentUser } = useAuth();
@@ -77,11 +78,26 @@ const InterviewChat = ({ domain, difficulty }) => {
     }
   };
 
+  // Function to analyze sentiment of user's response
+  const analyzeSentiment = async (response) => {
+    try {
+      const sentiment = await sentimentAnalysis(response);
+      setMessages(prev => [...prev, {
+        id: generateUniqueId(),
+        type: 'sentiment',
+        content: `Sentiment: ${sentiment}`,
+        timestamp: new Date().toISOString()
+      }]);
+    } catch (error) {
+      console.error('Error analyzing sentiment:', error);
+    }
+  };
+
   // Handle sending a message
   const handleSendMessage = async (e) => {
     e.preventDefault();
     if (!inputMessage.trim() || isLoading) return;
-
+  
     const lastQuestion = messages.findLast(msg => msg.type === 'question');
     
     // Add user's response to messages
@@ -94,12 +110,15 @@ const InterviewChat = ({ domain, difficulty }) => {
     
     setMessages(prev => [...prev, newMessage]);
     setInputMessage('');
-
+  
     // Save response if there was a previous question
     if (lastQuestion) {
       await saveResponse(lastQuestion.id, inputMessage);
     }
-
+  
+    // Analyze sentiment of the response
+    await analyzeSentiment(inputMessage);
+  
     // Generate next question after a short delay
     setTimeout(() => {
       generateQuestion();

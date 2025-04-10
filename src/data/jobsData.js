@@ -12,7 +12,7 @@ const jobsData = [
     skills: ['React', 'JavaScript', 'CSS', 'HTML'],
     posted: '2 days ago',
     description: 'We are looking for a frontend developer with strong React skills to join our team. You will be responsible for building user interfaces and implementing designs.',
-    logo: 'https://via.placeholder.com/50'
+    logo: 'front-end-dev.jpg'
   },
   {
     id: 2,
@@ -25,7 +25,7 @@ const jobsData = [
     skills: ['SQL', 'Python', 'Excel', 'Tableau'],
     posted: '5 days ago',
     description: 'Seeking a data analyst to help us extract insights from our datasets. You will be working with large datasets and creating visualizations.',
-    logo: 'https://via.placeholder.com/50'
+    logo: 'data-analyst.jpg'
   },
   {
     id: 3,
@@ -38,7 +38,7 @@ const jobsData = [
     skills: ['Figma', 'Adobe XD', 'User Research', 'Prototyping'],
     posted: '1 week ago',
     description: 'Looking for a UX designer with strong portfolio to join our creative team. You will be working on designing user-centered digital products.',
-    logo: 'https://via.placeholder.com/50'
+    logo: 'ux-designer.jpg'
   },
   {
     id: 4,
@@ -51,7 +51,7 @@ const jobsData = [
     skills: ['Node.js', 'Express', 'MongoDB', 'AWS'],
     posted: '3 days ago',
     description: 'Backend developer role focusing on building scalable APIs and server-side applications. Experience with Node.js and databases required.',
-    logo: 'https://via.placeholder.com/50'
+    logo: 'back-end-dev.jpg'
   },
   {
     id: 5,
@@ -64,7 +64,7 @@ const jobsData = [
     skills: ['Social Media', 'Content Writing', 'SEO', 'Analytics'],
     posted: '1 day ago',
     description: 'Seeking a marketing coordinator to help with our digital marketing efforts. You will be responsible for social media management, content creation, and analytics.',
-    logo: 'https://via.placeholder.com/50'
+    logo: 'marketing-coordinator.jpg'
   },
   {
     id: 6,
@@ -77,7 +77,7 @@ const jobsData = [
     skills: ['Product Development', 'Agile', 'User Stories', 'Market Research'],
     posted: '1 week ago',
     description: 'Experienced product manager needed to lead our product development efforts. You will work with cross-functional teams to deliver innovative products.',
-    logo: 'https://via.placeholder.com/50'
+    logo: 'product-manager.jpg'
   }
 ];
 

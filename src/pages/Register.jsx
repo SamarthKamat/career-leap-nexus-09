@@ -1,23 +1,24 @@
-
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { toast } from 'sonner';
 import { Eye, EyeOff, Mail, Lock, User, CheckCircle, XCircle } from 'lucide-react';
+import { motion } from 'framer-motion';
 import Header from '../components/Header';
-import Footer from '../components/Footer';
+import AuthLayout from '../components/layouts/AuthLayout';
 
 const Register = () => {
   const [fullName, setFullName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const [registrationType, setRegistrationType] = useState('student');
+  const [userType, setUserType] = useState('student');
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [acceptTerms, setAcceptTerms] = useState(false);
   
-  const { signup, updateUserProfile, currentUser } = useAuth();
+  const { signup, updateUserProfile, currentUser, signInWithGoogle, signInWithGitHub } = useAuth();
   const navigate = useNavigate();
   
   // Password validation states
@@ -29,13 +30,6 @@ const Register = () => {
     special: false,
     match: false
   });
-
-  // If user is already logged in, redirect to dashboard
-  useEffect(() => {
-    if (currentUser) {
-      navigate('/dashboard');
-    }
-  }, [currentUser, navigate]);
 
   // Update password validations whenever password or confirmPassword changes
   useEffect(() => {
@@ -49,11 +43,23 @@ const Register = () => {
     });
   }, [password, confirmPassword]);
 
+  // If user is already logged in, redirect to dashboard
+  useEffect(() => {
+    if (currentUser) {
+      navigate('/dashboard');
+    }
+  }, [currentUser, navigate]);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     
     if (!fullName || !email || !password || !confirmPassword) {
       toast.error('Please fill in all fields');
+      return;
+    }
+    
+    if (!acceptTerms) {
+      toast.error('Please accept the Terms and Conditions');
       return;
     }
     
@@ -71,13 +77,12 @@ const Register = () => {
     
     try {
       setIsLoading(true);
-      // Create the user account with additional data for Firestore
+      // Create the user account with additional data including userType
       const userCredential = await signup(email, password, {
-        fullName,
-        userType: registrationType, // Used by signup to determine collection
         displayName: fullName,
-        accountStatus: 'active',
-        registeredAt: new Date().toISOString()
+        userType: userType,
+        createdAt: new Date().toISOString(),
+        lastLogin: new Date().toISOString()
       });
       
       // Update the user profile with display name
@@ -112,9 +117,14 @@ const Register = () => {
   };
 
   return (
-    <>
+    <AuthLayout>
       <Header />
-      <div className="min-h-screen flex items-center justify-center bg-gray-50 py-20 px-4">
+      <motion.div 
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+        className="min-h-screen flex items-center justify-center bg-gray-50 py-20 px-4"
+      >
         <div className="max-w-md w-full space-y-8 bg-white p-8 rounded-lg shadow-md">
           <div className="text-center">
             <h1 className="text-3xl font-bold text-gray-900">Create an Account</h1>
@@ -130,22 +140,22 @@ const Register = () => {
                   <button
                     type="button"
                     className={`py-2 rounded-md ${
-                      registrationType === 'student' 
+                      userType === 'student' 
                         ? 'bg-primary-500 text-white' 
                         : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                     }`}
-                    onClick={() => setRegistrationType('student')}
+                    onClick={() => setUserType('student')}
                   >
                     Student
                   </button>
                   <button
                     type="button"
                     className={`py-2 rounded-md ${
-                      registrationType === 'employer' 
+                      userType === 'employer' 
                         ? 'bg-primary-500 text-white' 
                         : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                     }`}
-                    onClick={() => setRegistrationType('employer')}
+                    onClick={() => setUserType('employer')}
                   >
                     Employer
                   </button>
@@ -273,66 +283,49 @@ const Register = () => {
                     {validations.length ? (
                       <CheckCircle className="h-4 w-4 text-green-500 mr-2" />
                     ) : (
-                      <XCircle className="h-4 w-4 text-red-500 mr-2" />
+                      <XCircle className="h-4 w-4 text-gray-400 mr-2" />
                     )}
-                    <span className={validations.length ? "text-gray-600" : "text-gray-500"}>
-                      At least 8 characters
-                    </span>
+                    <span className="text-sm">Min 8 characters</span>
                   </li>
-                  
                   <li className="flex items-center">
                     {validations.uppercase ? (
                       <CheckCircle className="h-4 w-4 text-green-500 mr-2" />
                     ) : (
-                      <XCircle className="h-4 w-4 text-red-500 mr-2" />
+                      <XCircle className="h-4 w-4 text-gray-400 mr-2" />
                     )}
-                    <span className={validations.uppercase ? "text-gray-600" : "text-gray-500"}>
-                      Contains uppercase letter
-                    </span>
+                    <span className="text-sm">Uppercase letter</span>
                   </li>
-                  
                   <li className="flex items-center">
                     {validations.lowercase ? (
                       <CheckCircle className="h-4 w-4 text-green-500 mr-2" />
                     ) : (
-                      <XCircle className="h-4 w-4 text-red-500 mr-2" />
+                      <XCircle className="h-4 w-4 text-gray-400 mr-2" />
                     )}
-                    <span className={validations.lowercase ? "text-gray-600" : "text-gray-500"}>
-                      Contains lowercase letter
-                    </span>
+                    <span className="text-sm">Lowercase letter</span>
                   </li>
-                  
                   <li className="flex items-center">
                     {validations.number ? (
                       <CheckCircle className="h-4 w-4 text-green-500 mr-2" />
                     ) : (
-                      <XCircle className="h-4 w-4 text-red-500 mr-2" />
+                      <XCircle className="h-4 w-4 text-gray-400 mr-2" />
                     )}
-                    <span className={validations.number ? "text-gray-600" : "text-gray-500"}>
-                      Contains number
-                    </span>
+                    <span className="text-sm">Number</span>
                   </li>
-                  
                   <li className="flex items-center">
                     {validations.special ? (
                       <CheckCircle className="h-4 w-4 text-green-500 mr-2" />
                     ) : (
-                      <XCircle className="h-4 w-4 text-red-500 mr-2" />
+                      <XCircle className="h-4 w-4 text-gray-400 mr-2" />
                     )}
-                    <span className={validations.special ? "text-gray-600" : "text-gray-500"}>
-                      Contains special character
-                    </span>
+                    <span className="text-sm">Special character</span>
                   </li>
-                  
                   <li className="flex items-center">
                     {validations.match ? (
                       <CheckCircle className="h-4 w-4 text-green-500 mr-2" />
                     ) : (
-                      <XCircle className="h-4 w-4 text-red-500 mr-2" />
+                      <XCircle className="h-4 w-4 text-gray-400 mr-2" />
                     )}
-                    <span className={validations.match ? "text-gray-600" : "text-gray-500"}>
-                      Passwords match
-                    </span>
+                    <span className="text-sm">Passwords match</span>
                   </li>
                 </ul>
               </div>
@@ -345,18 +338,20 @@ const Register = () => {
                   id="terms"
                   name="terms"
                   type="checkbox"
-                  className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
+                  checked={acceptTerms}
+                  onChange={(e) => setAcceptTerms(e.target.checked)}
+                  className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded transition-colors duration-200"
                   required
                 />
               </div>
               <div className="ml-3 text-sm">
                 <label htmlFor="terms" className="text-gray-700">
                   I agree to the{' '}
-                  <Link to="/terms" className="text-primary-600 hover:text-primary-500">
+                  <Link to="/terms" className="text-primary-600 hover:text-primary-500 transition-colors duration-200">
                     Terms and Conditions
                   </Link>
                   {' '}and{' '}
-                  <Link to="/privacy" className="text-primary-600 hover:text-primary-500">
+                  <Link to="/privacy" className="text-primary-600 hover:text-primary-500 transition-colors duration-200">
                     Privacy Policy
                   </Link>
                 </label>
@@ -364,71 +359,14 @@ const Register = () => {
             </div>
 
             {/* Register Button */}
-            <div className="mt-6 space-y-4">
+            <div>
               <button
                 type="submit"
-                disabled={isLoading || !Object.values(validations).every(Boolean)}
-                className={`w-full btn btn-primary ${isLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
+                disabled={isLoading}
+                className={`btn btn-primary w-full ${isLoading ? 'opacity-70 cursor-not-allowed' : ''}`}
               >
-                {isLoading ? 'Creating account...' : 'Create Account'}
+                {isLoading ? 'Creating Account...' : 'Create Account'}
               </button>
-
-              <div className="relative">
-                <div className="absolute inset-0 flex items-center">
-                  <div className="w-full border-t border-gray-300"></div>
-                </div>
-                <div className="relative flex justify-center text-sm">
-                  <span className="px-2 bg-white text-gray-500">Or continue with</span>
-                </div>
-              </div>
-
-              <div className="grid grid-cols-2 gap-3">
-                <button
-                  type="button"
-                  onClick={async () => {
-                    try {
-                      setIsLoading(true);
-                      await signInWithGoogle();
-                      toast.success('Successfully signed in with Google!');
-                      navigate('/dashboard');
-                    } catch (error) {
-                      toast.error(error.message || 'Failed to sign in with Google');
-                    } finally {
-                      setIsLoading(false);
-                    }
-                  }}
-                  disabled={isLoading}
-                  className="btn border border-gray-300 bg-white hover:bg-gray-50 text-gray-700"
-                >
-                  <img
-                    src="https://www.svgrepo.com/show/475656/google-color.svg"
-                    alt="Google"
-                    className="w-5 h-5 mr-2"
-                  />
-                  Google
-                </button>
-
-                <button
-                  type="button"
-                  onClick={async () => {
-                    try {
-                      setIsLoading(true);
-                      await signInWithGitHub();
-                      toast.success('Successfully signed in with GitHub!');
-                      navigate('/dashboard');
-                    } catch (error) {
-                      toast.error(error.message || 'Failed to sign in with GitHub');
-                    } finally {
-                      setIsLoading(false);
-                    }
-                  }}
-                  disabled={isLoading}
-                  className="btn border border-gray-300 bg-white hover:bg-gray-50 text-gray-700"
-                >
-                  <Github className="w-5 h-5 mr-2" />
-                  GitHub
-                </button>
-              </div>
             </div>
             
             {/* Sign In Link */}
@@ -455,7 +393,22 @@ const Register = () => {
               <button
                 type="button"
                 className="btn border border-gray-300 bg-white hover:bg-gray-50 text-gray-700"
+                onClick={async () => {
+                  try {
+                    setIsLoading(true);
+                    await signInWithGoogle();
+                    toast.success('Successfully signed up with Google!');
+                    navigate('/dashboard');
+                  } catch (error) {
+                    console.error('Google sign-up error:', error);
+                    toast.error(error.message || 'Failed to sign up with Google');
+                  } finally {
+                    setIsLoading(false);
+                  }
+                }}
+                disabled={isLoading}
               >
+                <span className="sr-only">Sign up with Google</span>
                 <svg className="h-5 w-5 mr-2" viewBox="0 0 24 24">
                   <g transform="matrix(1, 0, 0, 1, 27.009001, -39.238998)">
                     <path fill="#4285F4" d="M -3.264 51.509 C -3.264 50.719 -3.334 49.969 -3.454 49.239 L -14.754 49.239 L -14.754 53.749 L -8.284 53.749 C -8.574 55.229 -9.424 56.479 -10.684 57.329 L -10.684 60.329 L -6.824 60.329 C -4.564 58.239 -3.264 55.159 -3.264 51.509 Z" />
@@ -470,7 +423,22 @@ const Register = () => {
               <button
                 type="button"
                 className="btn border border-gray-300 bg-white hover:bg-gray-50 text-gray-700"
+                onClick={async () => {
+                  try {
+                    setIsLoading(true);
+                    await signInWithGitHub();
+                    toast.success('Successfully signed up with GitHub!');
+                    navigate('/dashboard');
+                  } catch (error) {
+                    console.error('GitHub sign-up error:', error);
+                    toast.error(error.message || 'Failed to sign up with GitHub');
+                  } finally {
+                    setIsLoading(false);
+                  }
+                }}
+                disabled={isLoading}
               >
+                <span className="sr-only">Sign up with GitHub</span>
                 <svg className="h-5 w-5 mr-2" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
                   <path
                     fillRule="evenodd"
@@ -483,9 +451,8 @@ const Register = () => {
             </div>
           </div>
         </div>
-      </div>
-      <Footer />
-    </>
+      </motion.div>
+    </AuthLayout>
   );
 };
 
