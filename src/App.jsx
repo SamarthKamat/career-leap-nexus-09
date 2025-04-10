@@ -75,6 +75,16 @@ const App = () => (
               <InterviewPrep />
             </ProtectedRoute>
           } />
+          <Route path="/interview-prep/simulator" element={
+            <ProtectedRoute>
+              <RibbonInterviewSimulator />
+            </ProtectedRoute>
+          } />
+          <Route path="/interview-prep/results/:interviewId" element={
+            <ProtectedRoute>
+              <InterviewResults />
+            </ProtectedRoute>
+          } />
           <Route path="/chat" element={
             <ProtectedRoute>
               <div className="App">
