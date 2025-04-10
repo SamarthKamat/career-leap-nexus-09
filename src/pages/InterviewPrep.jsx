@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import Header from '../components/Header';
+import Header from '../components/Authheader';
 import Footer from '../components/Footer';
 import DomainSelector from '../components/interview/DomainSelector';
 import InterviewChat from '../components/interview/InterviewChat';
@@ -30,7 +30,7 @@ const InterviewPrep = () => {
       <Header />
       
       {/* Hero Section */}
-      <section className="bg-gradient-to-r from-primary to-primary-dark text-white py-20">
+      <section className="bg-gradient-to-r from-primary to-primary-dark text-white py-20 pt-28">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto text-center">
             <h1 className="text-4xl md:text-5xl font-bold mb-6">Interview Preparation</h1>
@@ -38,10 +38,7 @@ const InterviewPrep = () => {
               Practice and master your interview skills with our AI-powered interview simulator
             </p>
             <div className="flex flex-wrap justify-center gap-4">
-              <Link to="/interview-prep/simulator" className="btn btn-secondary px-8 py-3">
-                Start AI Interview
-              </Link>
-              <Link to="#practice" className="btn btn-outline border-white text-white hover:bg-white hover:text-primary px-8 py-3">
+              <Link to="/interview-prep/simulator" className="btn btn-outline border-white text-white hover:bg-white hover:text-primary px-8 py-3">
                 Practice Interviews
               </Link>
             </div>
@@ -69,7 +66,7 @@ const InterviewPrep = () => {
             </div>
             
             <div className="text-center p-6">
-              <div className="bg-secondary-100 text-secondary-600 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+              <div className="bg-primary-100 text-primary-600 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
                 <Monitor className="h-8 w-8" />
               </div>
               <h3 className="text-xl font-semibold mb-3">Video Response Analysis</h3>
@@ -79,7 +76,7 @@ const InterviewPrep = () => {
             </div>
             
             <div className="text-center p-6">
-              <div className="bg-accent-100 text-accent-600 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+              <div className="bg-primary-100 text-primary-600 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
                 <MessageSquare className="h-8 w-8" />
               </div>
               <h3 className="text-xl font-semibold mb-3">Answer Analysis</h3>
@@ -201,8 +198,8 @@ const InterviewPrep = () => {
             </div>
             
             <div className="bg-white p-6 rounded-lg shadow-md">
-              <div className="bg-secondary-100 p-3 rounded-full w-14 h-14 flex items-center justify-center mb-4">
-                <Video className="h-6 w-6 text-secondary-600" />
+              <div className="bg-primary-100 p-3 rounded-full w-14 h-14 flex items-center justify-center mb-4">
+                <Video className="h-6 w-6 text-primary-600" />
               </div>
               <h3 className="text-xl font-semibold mb-3">Interview Tutorials</h3>
               <p className="text-gray-600 mb-4">
@@ -222,14 +219,14 @@ const InterviewPrep = () => {
                   <span>Technical interview strategies</span>
                 </li>
               </ul>
-              <Link to="/resources/tutorials" className="text-secondary-600 font-medium flex items-center">
+              <Link to="/resources/tutorials" className="text-primary-600 font-medium flex items-center">
                 Watch Tutorials <ArrowRight size={16} className="ml-1" />
               </Link>
             </div>
             
             <div className="bg-white p-6 rounded-lg shadow-md">
-              <div className="bg-accent-100 p-3 rounded-full w-14 h-14 flex items-center justify-center mb-4">
-                <Calendar className="h-6 w-6 text-accent-600" />
+              <div className="bg-primary-100 p-3 rounded-full w-14 h-14 flex items-center justify-center mb-4">
+                <Calendar className="h-6 w-6 text-primary-600" />
               </div>
               <h3 className="text-xl font-semibold mb-3">Mock Interviews</h3>
               <p className="text-gray-600 mb-4">
@@ -249,7 +246,7 @@ const InterviewPrep = () => {
                   <span>Personalized improvement plan</span>
                 </li>
               </ul>
-              <Link id="schedule" to="/mock-interviews" className="text-accent-600 font-medium flex items-center">
+              <Link id="schedule" to="/mock-interviews" className="text-primary-600 font-medium flex items-center">
                 Schedule a Session <ArrowRight size={16} className="ml-1" />
               </Link>
             </div>

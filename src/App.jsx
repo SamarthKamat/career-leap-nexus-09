@@ -54,7 +54,7 @@ const App = () => (
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           
-          {/* Protected Routes */}
+          {/* Protected User Routes */}
           <Route path="/dashboard" element={
             <ProtectedRoute>
               <Dashboard />
@@ -85,119 +85,38 @@ const App = () => (
               <InterviewResults />
             </ProtectedRoute>
           } />
-          <Route path="/chat" element={
-            <ProtectedRoute>
-              <div className="App">
-                <h1>Website Chatbot</h1>
-                <Chatbot />
-              </div>
-            </ProtectedRoute>
-          } />
           <Route path="/achievements" element={
             <ProtectedRoute>
               <AchievementShowcase />
             </ProtectedRoute>
           } />
 
-          {/* Protected User Routes */}
-          <Route
-            path="/dashboard"
-            element={
-              <ProtectedRoute>
-                <Dashboard />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/profile"
-            element={
-              <ProtectedRoute>
-                <Profile />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/resume-builder"
-            element={
-              <ProtectedRoute>
-                <ResumeBuilder />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/interview-prep"
-            element={
-              <ProtectedRoute>
-                <InterviewPrep />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/achievements"
-            element={
-              <ProtectedRoute>
-                <AchievementShowcase />
-              </ProtectedRoute>
-            }
-          />
-
           {/* Protected Employer Dashboard Routes */}
-          <Route
-            path="/employer-dashboard"
-            element={
-              <ProtectedRoute>
-                <EmployerDashboard />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/employer-dashboard/post-job"
-            element={
-              <ProtectedRoute>
-                <PostJob />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/employer-dashboard/manage-jobs"
-            element={
-              <ProtectedRoute>
-                <ManageJobs />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/employer-dashboard/candidates"
-            element={
-              <ProtectedRoute>
-                <Candidates />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/employer-dashboard/interviews"
-            element={
-              <ProtectedRoute>
-                <Interviews />
-              </ProtectedRoute>
-            }
-          />
-
-          {/* Optional: Dedicated Chat Route */}
-          {/* If you want a dedicated chatbot page, uncomment this block */}
-          {/*
-          <Route
-            path="/chat"
-            element={
-              <ProtectedRoute>
-                <div className="App">
-                  <h1>Website Chatbot</h1>
-                  <Chatbot />
-                </div>
-              </ProtectedRoute>
-            }
-          />
-          */}
+          <Route path="/employer-dashboard" element={
+            <ProtectedRoute>
+              <EmployerDashboard />
+            </ProtectedRoute>
+          } />
+          <Route path="/employer-dashboard/post-job" element={
+            <ProtectedRoute>
+              <PostJob />
+            </ProtectedRoute>
+          } />
+          <Route path="/employer-dashboard/manage-jobs" element={
+            <ProtectedRoute>
+              <ManageJobs />
+            </ProtectedRoute>
+          } />
+          <Route path="/employer-dashboard/candidates" element={
+            <ProtectedRoute>
+              <Candidates />
+            </ProtectedRoute>
+          } />
+          <Route path="/employer-dashboard/interviews" element={
+            <ProtectedRoute>
+              <Interviews />
+            </ProtectedRoute>
+          } />
 
           {/* 404 Page */}
           <Route path="*" element={<NotFound />} />

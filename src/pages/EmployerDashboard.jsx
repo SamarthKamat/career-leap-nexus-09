@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
+import EmployerReport from '../components/EmployerReport';
 import { 
   Briefcase, 
   Users, 
@@ -12,11 +13,29 @@ import {
   ChevronRight,
   PlusCircle,
   CheckCircle,
-  Clock
+  Clock,
+  BarChart,
+  PieChart,
+  TrendingUp,
+  Award,
+  Target
 } from 'lucide-react';
 
 const EmployerDashboard = () => {
   const { currentUser } = useAuth();
+  const [analyticsData, setAnalyticsData] = useState({
+    hiringEfficiency: 85,
+    candidateQuality: 78,
+    timeToHire: 22, // days
+    interviewToOffer: 42, // percent
+    topSkills: [
+      { name: 'React', count: 28 },
+      { name: 'JavaScript', count: 35 },
+      { name: 'Node.js', count: 22 },
+      { name: 'Python', count: 18 },
+      { name: 'SQL', count: 25 }
+    ]
+  });
   
   // Sample dashboard data for employer
   const jobPostings = [
@@ -274,6 +293,66 @@ const EmployerDashboard = () => {
               </div>
             </div>
           </div>
+          
+          {/* AI Hiring Analytics */}
+          <div className="mt-6">
+            <EmployerReport userId={currentUser?.uid} />
+          </div>
+        </div>
+        
+        {/* Enhanced Analytics Section */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
+          {/* Employer Report Component */}
+          <EmployerReport userId={currentUser?.uid} />
+          
+          {/* Hiring Performance Metrics */}
+          <div className="bg-white rounded-lg shadow-md p-6">
+            <h2 className="text-xl font-semibold mb-4 flex items-center">
+              <BarChart className="h-5 w-5 mr-2" />
+              Hiring Performance Metrics
+            </h2>
+            
+            <div className="space-y-4">
+              <MetricCard 
+                title="Hiring Efficiency" 
+                value={`${analyticsData.hiringEfficiency}%`} 
+                icon={<TrendingUp className="h-5 w-5 text-green-500" />}
+                description="Overall hiring process efficiency score"
+              />
+              
+              <MetricCard 
+                title="Candidate Quality" 
+                value={`${analyticsData.candidateQuality}%`} 
+                icon={<Award className="h-5 w-5 text-blue-500" />}
+                description="Average quality score of interviewed candidates"
+              />
+              
+              <MetricCard 
+                title="Time to Hire" 
+                value={`${analyticsData.timeToHire} days`} 
+                icon={<Clock className="h-5 w-5 text-yellow-500" />}
+                description="Average days from job posting to offer acceptance"
+              />
+              
+              <MetricCard 
+                title="Interview to Offer Rate" 
+                value={`${analyticsData.interviewToOffer}%`} 
+                icon={<Target className="h-5 w-5 text-purple-500" />}
+                description="Percentage of interviews that result in job offers"
+              />
+            </div>
+            
+            <div className="mt-6">
+              <h3 className="font-semibold mb-3">Top Skills in Demand</h3>
+              <div className="flex flex-wrap gap-2">
+                {analyticsData.topSkills.map((skill, index) => (
+                  <div key={index} className="bg-gray-100 rounded-full px-3 py-1 text-sm">
+                    {skill.name} <span className="font-semibold text-primary-600">{skill.count}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
         </div>
       </div>
       
@@ -281,5 +360,20 @@ const EmployerDashboard = () => {
     </>
   );
 };
+
+const MetricCard = ({ title, value, icon, description }) => (
+  <div className="border rounded-md p-4 hover:shadow-md transition-shadow">
+    <div className="flex justify-between items-start">
+      <div>
+        <h3 className="font-semibold">{title}</h3>
+        <p className="text-sm text-gray-600">{description}</p>
+      </div>
+      <div className="p-2 rounded-full bg-gray-100">
+        {icon}
+      </div>
+    </div>
+    <p className="text-2xl font-bold mt-2 text-primary-600">{value}</p>
+  </div>
+);
 
 export default EmployerDashboard;

@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Download, Plus, Trash2, AlertCircle, CheckCircle, Loader } from 'lucide-react';
-import Header from '../components/Header';
+import Header from '../components/Authheader';
 import Footer from '../components/Footer';
 import { toast } from 'sonner';
 
