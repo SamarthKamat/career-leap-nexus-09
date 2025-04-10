@@ -6,6 +6,7 @@ import Footer from '../components/Footer';
 import { getApplicationsByUserId } from '../firebase/applicationsCollection';
 import { getActiveJobs } from '../firebase/jobsCollection';
 import { getInterviewsByCandidateId } from '../firebase/interviewsCollection';
+import EmployerReport from '../components/EmployerReport';
 import { 
   Briefcase, 
   FileText, 
@@ -15,7 +16,13 @@ import {
   Bell, 
   Calendar, 
   Clock,
-  ChevronRight
+  ChevronRight,
+  CheckCircle,
+  Target,
+  TrendingUp,
+  AlertCircle,
+  Code,
+  Users
 } from 'lucide-react';
 
 const Dashboard = () => {
@@ -23,6 +30,12 @@ const Dashboard = () => {
   const [applications, setApplications] = useState([]);
   const [recentJobs, setRecentJobs] = useState([]);
   const [upcomingInterviews, setUpcomingInterviews] = useState([]);
+  const [interviewPrep, setInterviewPrep] = useState({
+    technical: { completed: 7, total: 10, lastAccessed: '2 days ago' },
+    behavioral: { completed: 5, total: 8, lastAccessed: 'Yesterday' },
+    caseStudy: { completed: 3, total: 5, lastAccessed: '1 week ago' },
+    mockInterview: { completed: 2, total: 3, lastAccessed: 'Today' }
+  });
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -168,6 +181,9 @@ const Dashboard = () => {
 
           {/* Training Progress */}
           <TrainingProgress />
+          
+          {/* Interview Preparation Progress */}
+          <InterviewPrepProgress interviewPrep={interviewPrep} />
 
           {/* Notifications */}
           <Notifications />
@@ -301,5 +317,88 @@ const Notification = ({ icon, title, message, time }) => (
     </div>
   </div>
 );
+
+const InterviewPrepProgress = ({ interviewPrep }) => (
+  <div className="bg-white rounded-lg shadow-md p-6 mt-6">
+    <div className="flex justify-between items-center mb-4">
+      <h2 className="text-xl font-semibold flex items-center">
+        <Video className="h-5 w-5 mr-2" />
+        Interview Preparation Progress
+      </h2>
+      <Link to="/interview-prep" className="text-primary-600 hover:text-primary-700 text-sm font-medium flex items-center">
+        Practice Now <ChevronRight className="h-4 w-4 ml-1" />
+      </Link>
+    </div>
+
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <InterviewPrepCard 
+        title="Technical Interview" 
+        completed={interviewPrep.technical.completed} 
+        total={interviewPrep.technical.total} 
+        lastAccessed={interviewPrep.technical.lastAccessed}
+        icon={<Code className="h-5 w-5 text-blue-500" />}
+        color="blue"
+      />
+      <InterviewPrepCard 
+        title="Behavioral Interview" 
+        completed={interviewPrep.behavioral.completed} 
+        total={interviewPrep.behavioral.total} 
+        lastAccessed={interviewPrep.behavioral.lastAccessed}
+        icon={<Users className="h-5 w-5 text-purple-500" />}
+        color="purple"
+      />
+      <InterviewPrepCard 
+        title="Case Study Interview" 
+        completed={interviewPrep.caseStudy.completed} 
+        total={interviewPrep.caseStudy.total} 
+        lastAccessed={interviewPrep.caseStudy.lastAccessed}
+        icon={<FileText className="h-5 w-5 text-green-500" />}
+        color="green"
+      />
+      <InterviewPrepCard 
+        title="Mock Interview Sessions" 
+        completed={interviewPrep.mockInterview.completed} 
+        total={interviewPrep.mockInterview.total} 
+        lastAccessed={interviewPrep.mockInterview.lastAccessed}
+        icon={<Video className="h-5 w-5 text-red-500" />}
+        color="red"
+      />
+    </div>
+  </div>
+);
+
+const InterviewPrepCard = ({ title, completed, total, lastAccessed, icon, color }) => {
+  const percent = Math.round((completed / total) * 100);
+  const colorClasses = {
+    blue: 'bg-blue-500',
+    purple: 'bg-purple-500',
+    green: 'bg-green-500',
+    red: 'bg-red-500'
+  };
+  
+  return (
+    <div className="border rounded-md p-4">
+      <div className="flex items-start mb-2">
+        <div className={`p-2 rounded-full bg-${color}-100 mr-3`}>
+          {icon}
+        </div>
+        <div>
+          <h3 className="font-semibold">{title}</h3>
+          <div className="flex items-center text-sm text-gray-600">
+            <CheckCircle className="h-4 w-4 mr-1" />
+            <span>{completed}/{total} Completed</span>
+          </div>
+        </div>
+      </div>
+      <div className="w-full bg-gray-200 rounded-full h-2.5 mb-2">
+        <div className={`${colorClasses[color]} h-2.5 rounded-full`} style={{ width: `${percent}%` }}></div>
+      </div>
+      <div className="flex justify-between text-xs text-gray-500">
+        <span>{percent}% Complete</span>
+        <span>Last practiced: {lastAccessed}</span>
+      </div>
+    </div>
+  );
+};
 
 export default Dashboard;

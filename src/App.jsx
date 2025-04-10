@@ -53,6 +53,51 @@ const App = () => (
           <Route path="/companies" element={<CompanyProfiles />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          
+          {/* Protected Routes */}
+          <Route path="/dashboard" element={
+            <ProtectedRoute>
+              <Dashboard />
+            </ProtectedRoute>
+          } />
+          <Route path="/profile" element={
+            <ProtectedRoute>
+              <Profile />
+            </ProtectedRoute>
+          } />
+          <Route path="/resume-builder" element={
+            <ProtectedRoute>
+              <ResumeBuilder />
+            </ProtectedRoute>
+          } />
+          <Route path="/interview-prep" element={
+            <ProtectedRoute>
+              <InterviewPrep />
+            </ProtectedRoute>
+          } />
+          <Route path="/interview-prep/simulator" element={
+            <ProtectedRoute>
+              <RibbonInterviewSimulator />
+            </ProtectedRoute>
+          } />
+          <Route path="/interview-prep/results/:interviewId" element={
+            <ProtectedRoute>
+              <InterviewResults />
+            </ProtectedRoute>
+          } />
+          <Route path="/chat" element={
+            <ProtectedRoute>
+              <div className="App">
+                <h1>Website Chatbot</h1>
+                <Chatbot />
+              </div>
+            </ProtectedRoute>
+          } />
+          <Route path="/achievements" element={
+            <ProtectedRoute>
+              <AchievementShowcase />
+            </ProtectedRoute>
+          } />
 
           {/* Protected User Routes */}
           <Route

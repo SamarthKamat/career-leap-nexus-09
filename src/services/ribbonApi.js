@@ -1,7 +1,7 @@
 // Ribbon API Service
 
-// Using a CORS proxy to handle cross-origin requests
-const RIBBON_API_BASE_URL = 'https://cors-anywhere.herokuapp.com/https://app.ribbon.ai/be-api/v1';
+// Using Firebase Cloud Function as a proxy to handle CORS issues
+const RIBBON_API_BASE_URL = 'https://app.ribbon.ai/be-api/v1';
 const RIBBON_API_KEY = import.meta.env.VITE_RIBBON_API_KEY || 'your-api-key-here'; // Replace with actual API key in production
 
 /**
