@@ -38,7 +38,7 @@ const InterviewPrep = () => {
               Practice and master your interview skills with our AI-powered interview simulator
             </p>
             <div className="flex flex-wrap justify-center gap-4">
-              <Link to="#practice" className="btn btn-outline border-white text-white hover:bg-white hover:text-primary px-8 py-3">
+              <Link to="/interview-prep/simulator" className="btn btn-outline border-white text-white hover:bg-white hover:text-primary px-8 py-3">
                 Practice Interviews
               </Link>
             </div>
