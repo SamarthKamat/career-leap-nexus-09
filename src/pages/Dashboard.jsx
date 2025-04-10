@@ -2,7 +2,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
-import Header from '../components/Header';
+import Header from '../components/Authheader';
 import Footer from '../components/Footer';
 import { 
   Briefcase, 
@@ -79,7 +79,7 @@ const Dashboard = () => {
     <>
       <Header />
       
-      <div className="bg-gray-50 min-h-screen py-10">
+      <div className="bg-gray-50 min-h-screen pt-24 pb-10">
         <div className="container mx-auto px-4">
           {/* Welcome Header */}
           <div className="bg-white rounded-lg shadow-md p-6 mb-6">

@@ -4,7 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { toast } from 'sonner';
 import { Eye, EyeOff, Mail, Lock } from 'lucide-react';
-import Header from '../components/Header';
+import Header from '../components/Authheader';
 import Footer from '../components/Footer';
 
 const Login = () => {
@@ -34,6 +34,7 @@ const Login = () => {
       setIsLoading(true);
       await login(email, password);
       toast.success('Login successful!');
+      
       navigate('/dashboard');
     } catch (error) {
       console.error('Login error:', error);
@@ -68,18 +69,18 @@ const Login = () => {
           <div className="max-w-md w-full space-y-8 p-8">
             <div className="text-center">
               <h1 className="text-4xl font-extrabold text-gray-900 tracking-tight">Welcome Back</h1>
-              <p className="mt-3 text-lg text-gray-600">Sign in to access your account</p>
+              <p className="mt-3 text-lg font-medium text-gray-700">Sign in to access your account</p>
             </div>
             
             <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
-              <div className="space-y-4">
+              <div className="space-y-5">
                 <div className="relative">
-                  <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
+                  <label htmlFor="email" className="block text-sm font-semibold text-gray-800 mb-1">
                     Email Address
                   </label>
                   <div className="relative">
                     <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                      <Mail className="h-5 w-5 text-gray-400" />
+                      <Mail className="h-5 w-5 text-gray-500" />
                     </div>
                     <input
                       id="email"
@@ -89,7 +90,7 @@ const Login = () => {
                       required
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
-                      className="input-field pl-10"
+                      className="input-field pl-10 shadow-sm"
                       placeholder="you@example.com"
                     />
                   </div>
@@ -97,16 +98,16 @@ const Login = () => {
                 
                 <div className="relative">
                   <div className="flex items-center justify-between mb-1">
-                    <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+                    <label htmlFor="password" className="block text-sm font-semibold text-gray-800">
                       Password
                     </label>
-                    <Link to="/forgot-password" className="text-sm text-primary-600 hover:text-primary-500">
+                    <Link to="/forgot-password" className="text-sm font-medium text-primary-600 hover:text-primary-500">
                       Forgot password?
                     </Link>
                   </div>
                   <div className="relative">
                     <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                      <Lock className="h-5 w-5 text-gray-400" />
+                      <Lock className="h-5 w-5 text-gray-500" />
                     </div>
                     <input
                       id="password"
@@ -116,7 +117,7 @@ const Login = () => {
                       required
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
-                      className="input-field pl-10 pr-10"
+                      className="input-field pl-10 pr-10 shadow-sm"
                       placeholder="••••••••"
                     />
                     <button
@@ -138,7 +139,7 @@ const Login = () => {
                 <button
                   type="submit"
                   disabled={isLoading}
-                  className={`btn btn-primary w-full ${isLoading ? 'opacity-70 cursor-not-allowed' : ''}`}
+                  className={`w-full py-3.5 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-lg font-bold text-lg shadow-lg hover:from-blue-700 hover:to-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all duration-200 ${isLoading ? 'opacity-70 cursor-not-allowed' : 'hover:shadow-xl'}`}
                 >
                   {isLoading ? 'Signing in...' : 'Sign in'}
                 </button>
@@ -146,30 +147,30 @@ const Login = () => {
               
               <div className="flex items-center justify-center">
                 <div className="text-sm">
-                  <span className="text-gray-500">Don't have an account?</span>{' '}
-                  <Link to="/register" className="font-medium text-primary-600 hover:text-primary-500">
+                  <span className="text-gray-600">Don't have an account?</span>{' '}
+                  <Link to="/register" className="font-bold text-primary-600 hover:text-primary-500">
                     Sign up now
                   </Link>
                 </div>
               </div>
             </form>
             
-            <div className="mt-6">
+            <div className="mt-8">
               <div className="relative">
                 <div className="absolute inset-0 flex items-center">
                   <div className="w-full border-t border-gray-300"></div>
                 </div>
                 <div className="relative flex justify-center text-sm">
-                  <span className="px-2 bg-white text-gray-500">Or continue with</span>
+                  <span className="px-2 bg-white text-gray-600 font-medium">Or continue with</span>
                 </div>
               </div>
               
-              <div className="mt-6 grid grid-cols-2 gap-3">
+              <div className="mt-6 grid grid-cols-2 gap-4">
+                {/* Google Sign In Button */}
                 <button
                   type="button"
-                  className="btn border border-gray-300 bg-white hover:bg-gray-50 text-gray-700"
+                  className="flex items-center justify-center px-4 py-3 border border-gray-300 rounded-lg shadow-sm bg-white text-sm font-semibold text-gray-700 hover:bg-gray-50 transition-all duration-200"
                 >
-                  <span className="sr-only">Sign in with Google</span>
                   <svg className="h-5 w-5 mr-2" viewBox="0 0 24 24">
                     <g transform="matrix(1, 0, 0, 1, 27.009001, -39.238998)">
                       <path fill="#4285F4" d="M -3.264 51.509 C -3.264 50.719 -3.334 49.969 -3.454 49.239 L -14.754 49.239 L -14.754 53.749 L -8.284 53.749 C -8.574 55.229 -9.424 56.479 -10.684 57.329 L -10.684 60.329 L -6.824 60.329 C -4.564 58.239 -3.264 55.159 -3.264 51.509 Z" />
@@ -178,14 +179,14 @@ const Login = () => {
                       <path fill="#EA4335" d="M -14.754 43.989 C -12.984 43.989 -11.404 44.599 -10.154 45.789 L -6.734 42.369 C -8.804 40.429 -11.514 39.239 -14.754 39.239 C -19.444 39.239 -23.494 41.939 -25.464 45.859 L -21.484 48.949 C -20.534 46.099 -17.884 43.989 -14.754 43.989 Z" />
                     </g>
                   </svg>
-                  Google
+                  <span>Google</span>
                 </button>
-                
+
+                {/* GitHub Sign In Button */}
                 <button
                   type="button"
-                  className="btn border border-gray-300 bg-white hover:bg-gray-50 text-gray-700"
+                  className="flex items-center justify-center px-4 py-3 border border-gray-300 rounded-lg shadow-sm bg-white text-sm font-semibold text-gray-700 hover:bg-gray-50 transition-all duration-200"
                 >
-                  <span className="sr-only">Sign in with GitHub</span>
                   <svg className="h-5 w-5 mr-2" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
                     <path
                       fillRule="evenodd"
@@ -193,7 +194,7 @@ const Login = () => {
                       clipRule="evenodd"
                     />
                   </svg>
-                  GitHub
+                  <span>GitHub</span>
                 </button>
               </div>
             </div>

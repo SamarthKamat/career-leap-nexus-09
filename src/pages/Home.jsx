@@ -297,10 +297,10 @@ const Home = () => {
             Join thousands of students and professionals who have transformed their careers through JobGPT
           </p>
           <div className="flex flex-col sm:flex-row justify-center gap-4">
-            <Link to="/register" className="btn-glow bg-white text-primary hover:bg-gray-100 px-8 py-3 text-lg rounded-lg">
+            <Link to="/register" className="btn-glow bg-white text-white hover:bg-gray-100 px-8 py-3 text-lg rounded-lg">
               Get Started Today
             </Link>
-            <Link to="/training" className="btn-glow border-2 border-white text-white hover:bg-white hover:text-primary px-8 py-3 text-lg rounded-lg">
+            <Link to="/training" className="btn-glow border-2 border-white text-white hover:bg-white hover:text-white px-8 py-3 text-lg rounded-lg">
               Explore Training Programs
             </Link>
           </div>
