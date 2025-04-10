@@ -32,9 +32,35 @@ const Login = () => {
     
     try {
       setIsLoading(true);
-      await login(email, password);
+      const result = await login(email, password);
       toast.success('Login successful!');
-      navigate('/dashboard');
+      
+      // Get user type from Firestore
+      try {
+        const { doc, getDoc } = await import('firebase/firestore');
+        const { db } = await import('../firebase/config');
+        
+        // Get the user document from Firestore using the user ID from the login result
+        const userDoc = await getDoc(doc(db, "users", result.user.uid));
+        
+        if (userDoc.exists()) {
+          const userData = userDoc.data();
+          
+          // Redirect based on user type
+          if (userData.userType === 'employer') {
+            navigate('/employer-dashboard');
+          } else {
+            navigate('/dashboard');
+          }
+        } else {
+          // Default to student dashboard if user document doesn't exist
+          navigate('/dashboard');
+        }
+      } catch (firestoreError) {
+        console.error('Error fetching user data:', firestoreError);
+        // Default to dashboard if there's an error fetching user type
+        navigate('/dashboard');
+      }
     } catch (error) {
       console.error('Login error:', error);
       let errorMessage = 'Failed to log in';
