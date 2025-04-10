@@ -28,15 +28,24 @@ export function AuthProvider({ children }) {
       setError(null);
       const result = await signInWithPopup(auth, googleProvider);
       
-      // Create or update user document
+      // Create or update user document with all required fields
       const docRef = doc(db, 'users', result.user.uid);
+      const timestamp = new Date().toISOString();
       await setDoc(docRef, {
         email: result.user.email,
         displayName: result.user.displayName,
+        fullName: result.user.displayName, // Use displayName as fullName initially
         photoURL: result.user.photoURL,
-        createdAt: new Date().toISOString(),
-        lastLogin: new Date().toISOString(),
-        provider: 'google'
+        accountStatus: "active",
+        createdAt: timestamp,
+        registeredAt: timestamp,
+        lastLogin: timestamp,
+        provider: 'google',
+        progress: {
+          interviewsCompleted: 0,
+          lastActive: timestamp,
+        },
+        skillAssessments: []
       }, { merge: true });
 
       return result;
@@ -52,15 +61,24 @@ export function AuthProvider({ children }) {
       setError(null);
       const result = await signInWithPopup(auth, githubProvider);
       
-      // Create or update user document
+      // Create or update user document with all required fields
       const docRef = doc(db, 'users', result.user.uid);
+      const timestamp = new Date().toISOString();
       await setDoc(docRef, {
         email: result.user.email,
         displayName: result.user.displayName,
+        fullName: result.user.displayName, // Use displayName as fullName initially
         photoURL: result.user.photoURL,
-        createdAt: new Date().toISOString(),
-        lastLogin: new Date().toISOString(),
-        provider: 'github'
+        accountStatus: "active",
+        createdAt: timestamp,
+        registeredAt: timestamp,
+        lastLogin: timestamp,
+        provider: 'github',
+        progress: {
+          interviewsCompleted: 0,
+          lastActive: timestamp,
+        },
+        skillAssessments: []
       }, { merge: true });
 
       return result;
