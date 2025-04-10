@@ -7,10 +7,10 @@ const slides = [
     id: 1,
     title: "Build Your Career",
     subtitle: "Connect with top employers and land your dream job",
-    bgVideo: "bg-video.mp4", // Add video path
+    bgVideo: "bg-video.mp4",
     buttonText: "Browse Jobs",
     buttonLink: "/jobs",
-    //gradient: "from-blue-400 to-purple-400"
+    //gradient: "from-blue-600 to-purple-600"
   },
   {
     id: 2,
@@ -19,7 +19,7 @@ const slides = [
     bgImage: "https://images.unsplash.com/photo-1521737711867-e3b97375f902?ixlib=rb-4.0.3",
     buttonText: "Start Learning",
     buttonLink: "/training",
-    gradient: "from-green-400 to-blue-400"
+    //gradient: "from-green-400 to-blue-400"
   },
   {
     id: 3,
@@ -28,7 +28,7 @@ const slides = [
     bgImage: "https://images.unsplash.com/photo-1521737711867-e3b97375f902?ixlib=rb-4.0.3",
     buttonText: "Build Resume",
     buttonLink: "/resume-builder",
-    gradient: "from-purple-400 to-pink-400"
+    //gradient: "from-purple-400 to-pink-400"
   }
 ];
 
@@ -56,7 +56,7 @@ const HeroSlideshow = () => {
   };
 
   return (
-    <div className="relative min-h-[92vh] w-full overflow-hidden -mt-24">
+    <div className="relative min-h-[118vh] w-full overflow-hidden -mt-24">
       {slides.map((slide, index) => (
         <div
           key={slide.id}
@@ -85,21 +85,22 @@ const HeroSlideshow = () => {
               }}
             />
           )}
-          <div className={`absolute inset-0 bg-gradient-to-r ${slide.gradient} opacity-60`} />
+          <div className="absolute inset-0 bg-black bg-opacity-40" />
+          <div className={`absolute inset-0 bg-gradient-to-r ${slide.gradient} opacity-50`} />
 
           {/* Content */}
           <div className="relative h-full flex items-center pt-36">
             <div className="container mx-auto px-4">
               <div className="max-w-xl">
-                <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-3 text-white">
+                <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4 text-white drop-shadow-lg transform transition-transform duration-700 translate-y-0">
                   {slide.title}
                 </h1>
-                <p className="text-lg text-white mb-6">
+                <p className="text-xl text-white mb-8 drop-shadow-md font-medium opacity-90">
                   {slide.subtitle}
                 </p>
                 <Link 
                   to={slide.buttonLink}
-                  className="btn btn-primary px-6 py-2 text-base inline-flex items-center"
+                  className="btn btn-primary px-8 py-3 text-lg inline-flex items-center hover:scale-105 transition-transform duration-300 shadow-xl"
                 >
                   {slide.buttonText}
                 </Link>

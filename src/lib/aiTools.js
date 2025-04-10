@@ -5,7 +5,9 @@ import * as pdfjs from 'pdfjs-dist';
 import nlp from 'compromise';
 
 // Set the worker source for pdf.js
-pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
+if (typeof window !== 'undefined' && 'Worker' in window) {
+  pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
+}
 
 // Function to perform sentiment analysis
 export const sentimentAnalysis = async (text) => {

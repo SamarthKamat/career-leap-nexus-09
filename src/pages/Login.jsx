@@ -4,7 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { toast } from 'sonner';
 import { Eye, EyeOff, Mail, Lock } from 'lucide-react';
-import Header from '../components/Header';
+import Header from '../components/Authheader';
 import Footer from '../components/Footer';
 
 const Login = () => {
@@ -94,18 +94,18 @@ const Login = () => {
           <div className="max-w-md w-full space-y-8 p-8">
             <div className="text-center">
               <h1 className="text-4xl font-extrabold text-gray-900 tracking-tight">Welcome Back</h1>
-              <p className="mt-3 text-lg text-gray-600">Sign in to access your account</p>
+              <p className="mt-3 text-lg font-medium text-gray-700">Sign in to access your account</p>
             </div>
             
             <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
-              <div className="space-y-4">
+              <div className="space-y-5">
                 <div className="relative">
-                  <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
+                  <label htmlFor="email" className="block text-sm font-semibold text-gray-800 mb-1">
                     Email Address
                   </label>
                   <div className="relative">
                     <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                      <Mail className="h-5 w-5 text-gray-400" />
+                      <Mail className="h-5 w-5 text-gray-500" />
                     </div>
                     <input
                       id="email"
@@ -115,7 +115,7 @@ const Login = () => {
                       required
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
-                      className="input-field pl-10"
+                      className="input-field pl-10 shadow-sm"
                       placeholder="you@example.com"
                     />
                   </div>
@@ -123,16 +123,16 @@ const Login = () => {
                 
                 <div className="relative">
                   <div className="flex items-center justify-between mb-1">
-                    <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+                    <label htmlFor="password" className="block text-sm font-semibold text-gray-800">
                       Password
                     </label>
-                    <Link to="/forgot-password" className="text-sm text-primary-600 hover:text-primary-500">
+                    <Link to="/forgot-password" className="text-sm font-medium text-primary-600 hover:text-primary-500">
                       Forgot password?
                     </Link>
                   </div>
                   <div className="relative">
                     <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                      <Lock className="h-5 w-5 text-gray-400" />
+                      <Lock className="h-5 w-5 text-gray-500" />
                     </div>
                     <input
                       id="password"
@@ -142,7 +142,7 @@ const Login = () => {
                       required
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
-                      className="input-field pl-10 pr-10"
+                      className="input-field pl-10 pr-10 shadow-sm"
                       placeholder="••••••••"
                     />
                     <button
@@ -164,7 +164,7 @@ const Login = () => {
                 <button
                   type="submit"
                   disabled={isLoading}
-                  className={`btn btn-primary w-full ${isLoading ? 'opacity-70 cursor-not-allowed' : ''}`}
+                  className={`w-full py-3.5 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-lg font-bold text-lg shadow-lg hover:from-blue-700 hover:to-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all duration-200 ${isLoading ? 'opacity-70 cursor-not-allowed' : 'hover:shadow-xl'}`}
                 >
                   {isLoading ? 'Signing in...' : 'Sign in'}
                 </button>
@@ -172,8 +172,8 @@ const Login = () => {
               
               <div className="flex items-center justify-center">
                 <div className="text-sm">
-                  <span className="text-gray-500">Don't have an account?</span>{' '}
-                  <Link to="/register" className="font-medium text-primary-600 hover:text-primary-500">
+                  <span className="text-gray-600">Don't have an account?</span>{' '}
+                  <Link to="/register" className="font-bold text-primary-600 hover:text-primary-500">
                     Sign up now
                   </Link>
                 </div>

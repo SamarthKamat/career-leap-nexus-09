@@ -15,17 +15,17 @@ const AuthLayout = ({ children, title, subtitle }) => {
         />
         <div className="relative z-20 flex flex-col justify-between p-12 w-full">
           <div>
-            <Link to="/" className="text-2xl font-bold hover:text-primary-200 transition-colors">
+            <Link to="/" className="text-3xl font-bold hover:text-primary-200 transition-colors">
               CareerLeap
             </Link>
           </div>
           <div className="space-y-6">
-            <h1 className="text-4xl font-bold">
+            <h1 className="text-5xl font-extrabold leading-tight">
               Your Career Journey
               <br />
               Starts Here
             </h1>
-            <p className="text-lg text-primary-100">
+            <p className="text-xl text-primary-100 font-medium">
               Connect with top employers, discover opportunities, and take the next step in your professional journey.
             </p>
           </div>
@@ -44,8 +44,8 @@ const AuthLayout = ({ children, title, subtitle }) => {
       >
         <div className="w-full max-w-md space-y-8">
           <div className="text-center">
-            <h2 className="text-3xl font-bold tracking-tight text-gray-900">{title}</h2>
-            <p className="mt-2 text-gray-600">{subtitle}</p>
+            {title}
+            {subtitle}
           </div>
           {children}
         </div>
