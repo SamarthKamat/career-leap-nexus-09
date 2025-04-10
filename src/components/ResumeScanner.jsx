@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Upload, FileText, CheckCircle, AlertCircle, RefreshCw, Link } from 'lucide-react';
 import { parseResumeFile, parseResumeUrl } from '../services/resumeParserApi';
+import ResumeReport from './resume/ResumeReport';
 import { toast } from 'sonner';
 
 const ResumeScanner = () => {
@@ -260,80 +261,8 @@ const ResumeScanner = () => {
             </div>
           </div>
 
-          {/* Parsed Resume Data */}
-          <div className="space-y-4">
-            <h3 className="text-lg font-semibold">Parsed Resume Data</h3>
-            <div className="bg-gray-50 rounded-lg p-4 space-y-4">
-              {results.apiResponse && (
-                <div className="space-y-4">
-                  {results.apiResponse.name && (
-                    <div>
-                      <h4 className="font-medium mb-1">Name</h4>
-                      <p className="text-gray-700">{results.apiResponse.name}</p>
-                    </div>
-                  )}
-                  
-                  {results.apiResponse.email && (
-                    <div>
-                      <h4 className="font-medium mb-1">Email</h4>
-                      <p className="text-gray-700">{results.apiResponse.email}</p>
-                    </div>
-                  )}
-                  
-                  {results.apiResponse.phone && (
-                    <div>
-                      <h4 className="font-medium mb-1">Phone</h4>
-                      <p className="text-gray-700">{results.apiResponse.phone}</p>
-                    </div>
-                  )}
-                  
-                  {results.apiResponse.skills && results.apiResponse.skills.length > 0 && (
-                    <div>
-                      <h4 className="font-medium mb-1">Skills</h4>
-                      <div className="flex flex-wrap gap-2">
-                        {results.apiResponse.skills.map((skill, index) => (
-                          <span key={index} className="bg-blue-100 text-blue-800 px-2 py-1 rounded-md text-sm">
-                            {skill}
-                          </span>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-                  
-                  {results.apiResponse.education && results.apiResponse.education.length > 0 && (
-                    <div>
-                      <h4 className="font-medium mb-1">Education</h4>
-                      <div className="space-y-2">
-                        {results.apiResponse.education.map((edu, index) => (
-                          <div key={index} className="text-gray-700">
-                            <p className="font-medium">{edu.degree || 'Degree'}</p>
-                            <p>{edu.institution || 'Institution'}</p>
-                            {edu.dates && <p className="text-sm text-gray-500">{edu.dates}</p>}
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-                  
-                  {results.apiResponse.experience && results.apiResponse.experience.length > 0 && (
-                    <div>
-                      <h4 className="font-medium mb-1">Experience</h4>
-                      <div className="space-y-3">
-                        {results.apiResponse.experience.map((exp, index) => (
-                          <div key={index} className="text-gray-700">
-                            <p className="font-medium">{exp.title || 'Position'}</p>
-                            <p>{exp.company || 'Company'}</p>
-                            {exp.dates && <p className="text-sm text-gray-500">{exp.dates}</p>}
-                            {exp.description && <p className="text-sm mt-1">{exp.description}</p>}
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-                </div>
-              )}
-            </div>
-          </div>
+          {/* Detailed Resume Report */}
+          <ResumeReport parsedData={results.apiResponse} />
 
           {/* Suggestions */}
           <div className="space-y-4">
